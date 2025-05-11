@@ -5,6 +5,14 @@ import sqlite3
 app = Flask(__name__)
 
 
+@app.route("/gallery")
+def gallery():
+    art = [
+        {"title": "Death of Pentheus", "image_url": "/static/images/fresco-DeathOfPentheus.jpg"}
+    ]
+    return render_template("gallery.html", art=art)
+
+
 @app.route("/")
 def home():
     return render_template("home.html", title="Home")
