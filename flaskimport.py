@@ -8,7 +8,8 @@ app = Flask(__name__)
 @app.route("/gallery")
 def gallery():
     art = [
-        {"title": "Death of Pentheus", "image_url": "/static/images/fresco-DeathOfPentheus.jpg"}
+        {"title": "Death of Pentheus", "image_url": "/static/images/fresco-DeathOfPentheus.jpg"},
+        {"title": "Discobolus", "image_url": "/static/images/sculpture-Discobolus.JPG"}
     ]
     return render_template("gallery.html", art=art)
 
