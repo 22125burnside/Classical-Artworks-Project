@@ -5,6 +5,7 @@ import sqlite3
 app = Flask(__name__)
 
 
+# gallery full of the artworks
 @app.route("/gallery")
 def gallery():
     art = [
@@ -14,11 +15,13 @@ def gallery():
     return render_template("gallery.html", art=art)
 
 
+# my home page
 @app.route("/")
 def home():
     return render_template("home.html", title="Home")
 
 
+# Might delete later as kinda the same as the gallery
 @app.route('/all_artworks')
 def all_artworks():
     conn = sqlite3.connect("classical.db")
@@ -37,10 +40,12 @@ def all_artworks():
     return render_template("all_art.html", art=art)
 
 
+# My location page
 @app.route('/location')
 def location():
     conn = sqlite3.connect("classical.db")
     cur = conn.cursor()
+    # Just dumping my location data right now
     cur.execute("""SELECT Artwork.art_name, Artwork.type,
     FoundLocation.found_location, CurrentLocation.current_location
     FROM Artwork
@@ -49,7 +54,7 @@ def location():
     """)
     art = cur.fetchall()
     conn.close()
-    return render_template("location.html", art=art)
+    return render_template("locations.html", art=art)
 
 
 if __name__ == '__main__':

@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Site - {{title}}</title>
+    <title>Classic Art Site - {{title}}</title>
 </head>
 <body>
+    <!-- connect to header and nav html -->
     <header>{% include "header.html" %}</header>
-    <nav>NAV</nav>
+    <nav>{% include "nav.html" %}</nav>
     <main>{% block content %}{% endblock %}</main>
     <footer>(c)2025</footer>
 </body>
