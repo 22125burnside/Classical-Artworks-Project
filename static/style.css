@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
 
-.body {
+body {
     font-family: "Luxurious Roman", serif;
     font-weight: 400;
     font-style: normal;
+    color: black;
+    padding: 20px;
   }
-  
+
+header {
+    background-color: beige;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
