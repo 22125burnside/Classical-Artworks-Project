@@ -1,8 +1,18 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 import sqlite3
 
 
 app = Flask(__name__)
+
+
+# get db function (creates connection, etc.)
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect('classical.db')
+        db.row_factory = sqlite3.Row  # allows dictionary access
+        db.commit()
+    return db
 
 
 # gallery full of the artworks
@@ -24,36 +34,42 @@ def home():
 # Might delete later as kinda the same as the gallery
 @app.route('/all_artworks')
 def all_artworks():
-    conn = sqlite3.connect("classical.db")
-    cur = conn.cursor()
-    cur.execute("""SELECT Artwork.art_name, Artwork.type,
-    FoundLocation.found_location, CurrentLocation.current_location, Person.name,
-    Person.role, Century.century, Century.time_period
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+        Artwork.art_name,
+        Artwork.type,
+        FoundLocation.found_location,
+        CurrentLocation.current_location,
+        GROUP_CONCAT(Person.name || ' (' || Person.role || ')', ', ') AS people,
+        Century.century,
+        Century.time_period
     FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
-    JOIN ArtworkPerson ON Artwork.id=ArtworkPerson.aid
-    JOIN Person ON ArtworkPerson.pid=Person.id
-    """)
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
+    JOIN Person ON ArtworkPerson.pid = Person.id
+    JOIN Century ON Artwork.century_id = Century.id
+    GROUP BY Artwork.id
+""")
     art = cur.fetchall()
-    conn.close()
+    db.close()
     return render_template("all_art.html", art=art)
 
 
 # My location page
 @app.route('/location')
 def location():
-    conn = sqlite3.connect("classical.db")
-    cur = conn.cursor()
+    db = get_db()
     # Just dumping my location data right now
-    cur.execute("""SELECT Artwork.art_name, Artwork.type,
+    cur = db.execute("""SELECT Artwork.art_name, Artwork.type,
     FoundLocation.found_location, CurrentLocation.current_location
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
     """)
     art = cur.fetchall()
-    conn.close()
+    db.close()
     return render_template("locations.html", art=art)
 
 

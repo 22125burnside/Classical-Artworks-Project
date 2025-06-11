@@ -1,6 +1,38 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for art in art %}
-        <p>{{art}}</p>
-    {% endfor %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>All Artworks</title>
+    </head>
+    <table>
+        <thead>
+            <h1 class="home_header">All Artworks</h1>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Found Location</th>
+                    <th>Current Location</th>
+                    <th>Person Name</th>
+                    <th>Role</th>
+                    <th>Century</th>
+                    <th>Time Period</th>
+                </tr>
+        </thead>
+        <tbody>
+                {% for row in art %}
+                <tr>
+                    <td>{{ row['art_name'] }}</td>
+                    <td>{{ row['type'] }}</td>
+                    <td>{{ row['found_location'] }}</td>
+                    <td>{{ row['current_location'] }}</td>
+                    <td>{{ row['people'] }}</td>
+                    <td>{{ row['century'] }}</td>
+                    <td>{{ row['time_period'] }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+</html>
 {% endblock %}
