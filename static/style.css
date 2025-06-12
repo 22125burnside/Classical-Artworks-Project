@@ -34,11 +34,19 @@ header{
 }
 
 header h1{
-  font-size: 70px;
+  font-size: 80px;
   font-family: "Tangerine", cursive;
   font-weight: 400;
   font-style: normal;
   margin: 0; /*set default margins to zero*/
+}
+
+.hero-text{
+  background-color: #EDE8D0;
+  /* Fix the padding because the font is slanted to the right making it uneven */
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
 }
 
 h1{
