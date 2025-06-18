@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
 
+/* Maybe change the colours as they are not the most aesthetic */
 
 * {
   margin: 0;
@@ -44,7 +45,10 @@ header h1{
 .hero-text{
   background-color: #EDE8D0;
   /* Fix the padding because the font is slanted to the right making it uneven */
-  padding: 15px;
+  padding-right: 15px;
+  padding-left: 13px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   border-radius: 8px;
   text-align: center;
 }
@@ -55,7 +59,7 @@ h1{
   margin-top: 15px;
 }
 
-.home_header{
+.home-header{
   font-family: "Tangerine", cursive;
   font-weight: 400;
   font-style: normal;
@@ -64,4 +68,69 @@ h1{
   border: 2px rgb(212, 175, 55) solid;
   border-radius: 8px;
   text-align: center;
+}
+
+.intro {
+  width: 60%;
+  margin: 40px auto;
+  text-align: center;
+  background-color: #EDE8D0;
+  width: 70%;
+  padding: 15px;
+  border: 2px rgb(212, 175, 55) solid;
+  border-radius: 8px;
+}
+
+.intro-header{
+  font-family: "Tangerine", cursive;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+}
+
+.art-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.art-card {
+  width: 300px;
+  background-color: #EDE8D0;
+  border: 2px rgb(212, 175, 55) solid;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  margin: 20px;
+}
+
+.art-name {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.art-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.no-image {
+  width: 100%;
+  height: 150px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #555;
+  font-size: 14px;
+}
+
+.art-details {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: left;
 }

@@ -15,20 +15,29 @@ def get_db():
     return db
 
 
-# gallery full of the artworks
-@app.route("/gallery")
-def gallery():
-    art = [
-        {"title": "Death of Pentheus", "image_url": "/static/images/fresco-DeathOfPentheus.jpg"},
-        {"title": "Discobolus", "image_url": "/static/images/sculpture-Discobolus.JPG"}
-    ]
-    return render_template("gallery.html", art=art)
-
-
 # my home page
 @app.route("/")
 def home():
-    return render_template("home.html", title="Home")
+    db = get_db()
+    cur = db.execute("""
+SELECT
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    Artwork.image,
+    Century.century,
+    Century.time_period,
+    FoundLocation.found_location,
+    CurrentLocation.current_location
+FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century_id
+ORDER BY Century.time_period ASC
+""")
+    art = cur.fetchall()
+    db.close()
+    return render_template("home.html", title="Home", art=art)
 
 
 # Might delete later as kinda the same as the gallery

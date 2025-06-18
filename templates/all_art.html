@@ -8,7 +8,7 @@
     </head>
     <table>
         <thead>
-            <h1 class="home_header">All Artworks</h1>
+            <h1 class="all_art_header">All Artworks</h1>
                 <tr>
                     <th>Name</th>
                     <th>Type</th>
@@ -23,6 +23,9 @@
                 {% for row in art %}
                 <tr>
                     <td>{{ row['art_name'] }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}" width="100">
+                    </td>
                     <td>{{ row['type'] }}</td>
                     <td>{{ row['found_location'] }}</td>
                     <td>{{ row['current_location'] }}</td>

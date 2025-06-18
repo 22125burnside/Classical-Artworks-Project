@@ -1,5 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>This is the home page!</h1>
-<hr>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Changing this header later or maybe deleting? (looks kinda bad)-->
+    <h1 class="home-header">This is the home page!</h1>
+    <div class="intro">
+        <!-- The introduction column -->
+        <h1 class="intro-header">What this websites about!</h1>
+        <p class="intro-words"> Explore a selection of artworks made by the Greeks, Romans and other classical artists.
+            This collection includes: frescoes, sculptures, architect, reliefs, and more,
+            with details on origins, current locations, time period, and people featured.</p>
+    </div>
+    <div class="art-gallery">
+        {% for row in art[:5] %}
+        <div class="art-card">
+            <h2 class="art-name">{{ row['art_name'] }}</h2>
+
+            {% if row['image'] %}
+                <img src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}" class="art-image">
+            {% else %}
+                <div class="no-image">No image available</div>
+            {% endif %}
+
+            <div class="art-details">
+                <p><strong>Type:</strong> {{ row['type'] }}</p>
+                <p><strong>Found Location:</strong> {{ row['found_location'] }}</p>
+                <p><strong>Current Location:</strong> {{ row['current_location'] }}</p>
+                <p><strong>Century:</strong> {{ row['century'] }}</p>
+                <p><strong>Time Period:</strong> {{ row['time_period'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
 {% endblock %}
