@@ -23,9 +23,9 @@
             <h2 class="art-name">{{ row['art_name'] }}</h2>
 
             {% if row['image'] %}
-                <img src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}" class="art-image">
+                <img class="art-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
             {% else %}
-                <div class="no-image">No image available</div>
+                <img class="no-image" src="static/images/placeholder.png" alt="no image avaliable">
             {% endif %}
 
             <div class="art-details">
