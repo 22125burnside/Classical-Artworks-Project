@@ -15,13 +15,19 @@ def get_db():
     return db
 
 
+@app.teardown_appcontext
+def close_db(error):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+
 # my home page
 @app.route("/")
 def home():
     db = get_db()
     cur = db.execute("""
-SELECT
-    Artwork.art_name,
+    SELECT Artwork.art_name,
     Artwork.type,
     Artwork.years,
     Artwork.image,
@@ -29,14 +35,12 @@ SELECT
     Century.time_period,
     FoundLocation.found_location,
     CurrentLocation.current_location
-FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century_id
-ORDER BY Century.time_period ASC
-""")
+    FROM Artwork
+    JOIN Century ON Artwork.century_id=Century.id
+    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
+    """)
     art = cur.fetchall()
-    db.close()
     return render_template("home.html", title="Home", art=art)
 
 
@@ -62,7 +66,6 @@ def all_artworks():
     GROUP BY Artwork.id
 """)
     art = cur.fetchall()
-    db.close()
     return render_template("all_art.html", art=art)
 
 
@@ -78,8 +81,13 @@ def location():
     JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
     """)
     art = cur.fetchall()
-    db.close()
     return render_template("locations.html", art=art)
+
+
+@app.errorhandler(404)
+def not_found(e):
+    print(e)
+    return render_template("404.html")
 
 
 if __name__ == '__main__':

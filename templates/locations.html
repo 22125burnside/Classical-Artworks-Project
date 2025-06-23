@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for art in art %}
-        <p>{{art}}</p>
+    {% for row in art %}
+        <p>{{row.art_name}}</p>
     {% endfor %}
 {% endblock %}

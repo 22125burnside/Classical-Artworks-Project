@@ -88,7 +88,7 @@ h1{
   text-align: center;
 }
 
-.art-gallery {
+.home-gallery {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
@@ -96,7 +96,7 @@ h1{
   padding: 20px;
 }
 
-.art-card {
+.home-card {
   width: 300px;
   background-color: #EDE8D0;
   border: 2px rgb(212, 175, 55) solid;
@@ -106,24 +106,26 @@ h1{
   margin: 20px;
 }
 
-.art-name {
+.home-card_name {
   font-size: 18px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
-.art-image {
+.home-card_image {
   width: 100%;
   height: 300px;
   border-radius: 8px;
+  margin-top: 15px;
 }
 
 .no-image {
   width: 100%;
   height: 300px;
   border-radius: 8px;
+  margin-top: 15px;
 }
 
-.art-details {
+.home-card_details {
   margin-top: 10px;
   font-size: 14px;
   text-align: left;
