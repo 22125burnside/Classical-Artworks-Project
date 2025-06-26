@@ -11,32 +11,96 @@
     <!-- Changing this header later or maybe deleting? (looks kinda bad)-->
     <h1 class="home-header">This is the home page!</h1>
     <div class="intro">
-        <!-- The introduction column -->
+        <!-- The introduction column CHANGE THIS IT LOOKS UGLY -->
         <h1 class="intro-header">What this websites about!</h1>More actions
         <p class="intro-words"> Explore a selection of artworks made by the Greeks, Romans and other classical artists.
             This collection includes: frescoes, sculptures, architect, reliefs, and more,
             with details on origins, current locations, time period, and people featured.</p>
     </div>
     <!-- art card section -->
+    <div class="card-header">
+        <h2 class="card-header-words">Frescoes</h2>
+    </div>
      <div class="home-gallery">
+        <!-- CHANGE LATER TO ONLY SHOW SOME [:13] -->
         {% for row in art %}
-        <div class="home-card">
-            <tr>
-                <td class="home-card_name">{{ row.art_name }}</td>
-                    {% if row.image %}
-                    <img class="home-card_image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
-                    {% else %}
-                    <img class="no-image" src="static/images/placeholder.png" alt="no image avaliable">
-                    {% endif %}
-                <div class="home-card_details">
-                    <td>Type: {{ row.type }}</td><br>
-                    <td>Date made: {{ row.years }}</td><br>
-                    <td>Century: {{ row.century }}</td><br>
-                    <td>Found Location: {{ row.found_location }}</td><br>
-                    <td>Current Location: {{ row.current_location }}</td><br>
-                </div>
-            </tr>
+        <!-- Fresco section (just has frescoes) -->
+            {% if row['type']|lower == 'fresco' %}
+            <div class="home-card">
+                <tr>
+                    <td class="home-card_name">{{ row.art_name }}</td>
+                        {% if row.image %}
+                        <img class="fresco-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        {% else %}
+                        <img class="fresco-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        {% endif %}
+                    <div class="home-card_details">
+                        <td>Type: {{ row.type }}</td><br>
+                        <td>Date made: {{ row.years }}</td><br>
+                        <td>Century: {{ row.century }}</td><br>
+                        <td>Found Location: {{ row.found_location }}</td><br>
+                        <td>Current Location: {{ row.current_location }}</td><br>
+                    </div>
+                </tr>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+        <div class="card-header">
+            <h2 class="card-header-words">Sculpture</h2>
         </div>
+    <div class="home-gallery">
+        <!-- CHANGE LATER TO ONLY SHOW SOME [:6] -->
+        {% for row in art %}
+        <!-- Sculpture section (just has sculptures) -->
+            {% if row['type']|lower == 'sculpture' %}
+            <div class="home-card">
+                <tr>
+                    <td class="home-card_name">{{ row.art_name }}</td>
+                        {% if row.image %}
+                        <img class="sculpture-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        {% else %}
+                        <img class="sculpture-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        {% endif %}
+                    <div class="home-card_details">
+                        <td>Type: {{ row.type }}</td><br>
+                        <td>Date made: {{ row.years }}</td><br>
+                        <td>Century: {{ row.century }}</td><br>
+                        <td>Found Location: {{ row.found_location }}</td><br>
+                        <td>Current Location: {{ row.current_location }}</td><br>
+                    </div>
+                </tr>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="card-header">
+        <h2 class="card-header-words">Architecture</h2>
+    </div>
+    <div class="home-gallery">
+        <!-- CHANGE LATER TO ONLY SHOW SOME -->
+        {% for row in art %}
+        <!-- architecture section (just has architecture) -->
+            {% if row['type']|lower == 'architecture' %}
+            <div class="home-card">
+                <tr>
+                    <td class="home-card_name">{{ row.art_name }}</td>
+                        {% if row.image %}
+                        <!-- Change size to fit architecture -->
+                        <img class="sculpture-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        {% else %}
+                        <img class="sculpture-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        {% endif %}
+                    <div class="home-card_details">
+                        <td>Type: {{ row.type }}</td><br>
+                        <td>Date made: {{ row.years }}</td><br>
+                        <td>Century: {{ row.century }}</td><br>
+                        <td>Found Location: {{ row.found_location }}</td><br>
+                        <td>Current Location: {{ row.current_location }}</td><br>
+                    </div>
+                </tr>
+            </div>
+            {% endif %}
         {% endfor %}
     </div>
 </tbody>

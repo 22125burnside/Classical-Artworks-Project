@@ -84,12 +84,6 @@ def location():
     return render_template("locations.html", art=art)
 
 
-@app.errorhandler(404)
-def not_found(e):
-    print(e)
-    return render_template("404.html")
-
-
 if __name__ == '__main__':
     # TAKE THIS BIT OUT BEFORE SUMBIT
     app.run(debug=True)
