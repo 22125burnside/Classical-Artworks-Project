@@ -78,18 +78,18 @@
         <h2 class="card-header-words">Architecture</h2>
     </div>
     <div class="home-gallery">
-        <!-- CHANGE LATER TO ONLY SHOW SOME -->
+        <!-- CHANGE LATER TO ONLY SHOW SOME [:15] -->
         {% for row in art %}
         <!-- architecture section (just has architecture) -->
             {% if row['type']|lower == 'architecture' %}
-            <div class="home-card">
+            <div class="architect-home-card">
                 <tr>
                     <td class="home-card_name">{{ row.art_name }}</td>
                         {% if row.image %}
                         <!-- Change size to fit architecture -->
-                        <img class="sculpture-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="architect-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="sculpture-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="architect-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
                     <div class="home-card_details">
                         <td>Type: {{ row.type }}</td><br>
