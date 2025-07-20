@@ -127,7 +127,35 @@
             </div>
             {% endif %}
         {% endfor %}
-    </div>    
+    </div>
+     <!-- mosaic section -->
+     <div class="card-header">
+        <h2 class="card-header-words">Mosaics</h2>
+    </div>
+    <div class="home-gallery">
+        {% for row in art %}
+            {% if row['type']|lower == 'mosaic' %}
+            <div class="mosaic-home-card">
+                <tr>
+                    <td class="home-card_name">{{ row.art_name }}</td>
+                        {% if row.image %}
+                        <!-- Change size to fit mosaic -->
+                        <img class="mosaic-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        {% else %}
+                        <img class="mosaic-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        {% endif %}
+                    <div class="home-card_details">
+                        <td>Type: {{ row.type }}</td><br>
+                        <td>Date made: {{ row.years }}</td><br>
+                        <td>Century: {{ row.century }}</td><br>
+                        <td>Found Location: {{ row.found_location }}</td><br>
+                        <td>Current Location: {{ row.current_location }}</td><br>
+                    </div>
+                </tr>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div> 
 </tbody>
 </html>
 {% endblock %}
