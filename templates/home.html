@@ -17,7 +17,34 @@
             This collection includes: frescoes, sculptures, architect, reliefs, and more,
             with details on origins, current locations, time period, and people featured.</p>
     </div>
-     <!-- Vase section -->
+    <!-- Fresco section -->
+    <div class="card-header">
+        <h2 class="card-header-words">Frescoes</h2>
+    </div>
+     <div class="home-gallery">
+        {% for row in art [:13] %}
+            {% if row['type']|lower == 'fresco' %}
+            <div class="home-card">
+                <tr>
+                    <td class="home-card_name">{{ row.art_name }}</td>
+                        {% if row.image %}
+                        <img class="fresco-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        {% else %}
+                        <img class="fresco-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        {% endif %}
+                    <div class="home-card_details">
+                        <td>Type: {{ row.type }}</td><br>
+                        <td>Date made: {{ row.years }}</td><br>
+                        <td>Century: {{ row.century }}</td><br>
+                        <td>Found Location: {{ row.found_location }}</td><br>
+                        <td>Current Location: {{ row.current_location }}</td><br>
+                    </div>
+                </tr>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <!-- Vase section -->
     <div class="card-header">
         <h2 class="card-header-words">Vases</h2>
     </div>
@@ -33,33 +60,6 @@
                         <img class="vase-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
                         <img class="vase-no-image" src="static/images/placeholder.png" alt="no image avaliable">
-                        {% endif %}
-                    <div class="home-card_details">
-                        <td>Type: {{ row.type }}</td><br>
-                        <td>Date made: {{ row.years }}</td><br>
-                        <td>Century: {{ row.century }}</td><br>
-                        <td>Found Location: {{ row.found_location }}</td><br>
-                        <td>Current Location: {{ row.current_location }}</td><br>
-                    </div>
-                </tr>
-            </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-    <!-- Fresco section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Frescoes</h2>
-    </div>
-     <div class="home-gallery">
-        {% for row in art [:13] %}
-            {% if row['type']|lower == 'fresco' %}
-            <div class="home-card">
-                <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
-                        {% if row.image %}
-                        <img class="fresco-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
-                        {% else %}
-                        <img class="fresco-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
                     <div class="home-card_details">
                         <td>Type: {{ row.type }}</td><br>
@@ -185,6 +185,35 @@
             {% endif %}
         {% endfor %}
     </div> 
+    <!-- Jewellery section -->
+    <div class="card-header">
+        <h2 class="card-header-words">Jewellery</h2>
+    </div>
+    <div class="home-gallery">
+        <!-- Change to only show some -->
+        {% for row in art %}
+            {% if row['type']|lower == 'jewellery' %}
+            <div class="jewellery-home-card">
+                <tr>
+                    <td class="home-card_name">{{ row.art_name }}</td>
+                        {% if row.image %}
+                        <!-- Change size to fit jewellery -->
+                        <img class="jewellery-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        {% else %}
+                        <img class="jewellery-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        {% endif %}
+                    <div class="home-card_details">
+                        <td>Type: {{ row.type }}</td><br>
+                        <td>Date made: {{ row.years }}</td><br>
+                        <td>Century: {{ row.century }}</td><br>
+                        <td>Found Location: {{ row.found_location }}</td><br>
+                        <td>Current Location: {{ row.current_location }}</td><br>
+                    </div>
+                </tr>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </tbody>
 </html>
 {% endblock %}
