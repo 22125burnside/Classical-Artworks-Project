@@ -18,21 +18,21 @@
             with details on origins, current locations, time period, and people featured.</p>
     </div>
     <!-- Fresco section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Frescoes</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Frescoes</h2>
     </div>
      <div class="home-gallery">
-        {% for row in art [:13] %}
+        {% for row in art %}
             {% if row['type']|lower == 'fresco' %}
             <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <img class="fresco-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="fresco-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
@@ -45,23 +45,21 @@
         {% endfor %}
     </div>
     <!-- Vase section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Vases</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Vases</h2>
     </div>
     <div class="home-gallery">
-        <!-- Change to only show some -->
         {% for row in art %}
             {% if row['type']|lower == 'vase' %}
-            <div class="vase-home-card">
+            <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <!-- Change size to fit Vase -->
-                        <img class="vase-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="vase-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
@@ -74,21 +72,21 @@
         {% endfor %}
     </div>
     <!-- Sculpture section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Sculpture</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Sculpture</h2>
     </div>
     <div class="home-gallery">
-        {% for row in art [:6] %}
+        {% for row in art %}
             {% if row['type']|lower == 'sculpture' %}
             <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <img class="sculpture-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="sculpture-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
@@ -101,22 +99,21 @@
         {% endfor %}
     </div>
     <!-- Architecture section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Architecture</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Architecture</h2>
     </div>
     <div class="home-gallery">
-        {% for row in art [:15] %}
+        {% for row in art %}
             {% if row['type']|lower == 'architecture' %}
-            <div class="architect-home-card">
+            <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <!-- Change size to fit architecture -->
-                        <img class="architect-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="architect-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
@@ -129,23 +126,21 @@
         {% endfor %}
     </div>
     <!-- Relief section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Reliefs</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Reliefs</h2>
     </div>
     <div class="home-gallery">
-        <!-- Change to only show some -->
-        {% for row in art [:28] %}
+        {% for row in art %}
             {% if row['type']|lower == 'relief' %}
-            <div class="relief-home-card">
+            <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <!-- Change size to fit relief -->
-                        <img class="relief-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="relief-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
@@ -158,22 +153,21 @@
         {% endfor %}
     </div>
      <!-- mosaic section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Mosaics</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Mosaics</h2>
     </div>
     <div class="home-gallery">
-        {% for row in art [:31] %}
+        {% for row in art %}
             {% if row['type']|lower == 'mosaic' %}
-            <div class="mosaic-home-card">
+            <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <!-- Change size to fit mosaic -->
-                        <img class="mosaic-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="mosaic-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
@@ -186,23 +180,21 @@
         {% endfor %}
     </div> 
     <!-- Jewellery section -->
-    <div class="card-header">
-        <h2 class="card-header-words">Jewellery</h2>
+    <div class="section-header">
+        <h2 class="section-header-words">Jewellery</h2>
     </div>
     <div class="home-gallery">
-        <!-- Change to only show some -->
         {% for row in art %}
             {% if row['type']|lower == 'jewellery' %}
-            <div class="jewellery-home-card">
+            <div class="home-card">
                 <tr>
-                    <td class="home-card_name">{{ row.art_name }}</td>
+                    <div class="home-card-name">{{ row.art_name }}</div>
                         {% if row.image %}
-                        <!-- Change size to fit jewellery -->
-                        <img class="jewellery-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
+                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                         {% else %}
-                        <img class="jewellery-no-image" src="static/images/placeholder.png" alt="no image avaliable">
+                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                         {% endif %}
-                    <div class="home-card_details">
+                    <div class="home-card-details">
                         <td>Type: {{ row.type }}</td><br>
                         <td>Date made: {{ row.years }}</td><br>
                         <td>Century: {{ row.century }}</td><br>
