@@ -66,7 +66,7 @@ def all_artworks():
     GROUP BY Artwork.id
 """)
     art = cur.fetchall()
-    return render_template("all_art.html", art=art)
+    return render_template("all_art.html", title="All Art", art=art)
 
 
 # My location page
@@ -74,14 +74,37 @@ def all_artworks():
 def location():
     db = get_db()
     # Just dumping my location data right now
-    cur = db.execute("""SELECT Artwork.art_name, Artwork.type,
-    FoundLocation.found_location, CurrentLocation.current_location
+    cur = db.execute("""
+    SELECT 
+    Artwork.art_name,
+    Artwork.type,
+    FoundLocation.found_location, 
+    CurrentLocation.current_location
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
     """)
     art = cur.fetchall()
-    return render_template("locations.html", art=art)
+    return render_template("locations.html", title="Locations", art=art)
+
+
+# My time period page
+@app.route('/time_period')
+def time_period():
+    db = get_db()
+    # Just dumping my time_period data right now
+    cur = db.execute("""
+    SELECT 
+    Artwork.name
+    Artwork.type
+    Artowrk.years
+    Century.century
+    Century.time_period
+    FROM Artwork
+    JOIN Century ON Artwork.century_id=Century.id;
+    """)
+    art = cur.fetchall()
+    return render_template("time_period.html", title="Time Period", art=art)
 
 
 if __name__ == '__main__':

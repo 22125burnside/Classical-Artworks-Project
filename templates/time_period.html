@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>This is time period page</h1>
+    {% for row in art %}
+        <p>{{row.art_name}}</p>
+    {% endfor %}
+{% endblock %}
