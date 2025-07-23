@@ -6,7 +6,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
@@ -15,13 +14,11 @@ body {
   font-style: normal;
   margin: 0 auto;
   color: black;
-  padding: 20px;
   }
 
 h1{
   font-size: 50px;
-  margin-bottom: 15px;
-  margin-top: 15px;
+  padding: 10px;
 }
 
   /* Header image */
@@ -39,6 +36,7 @@ header{
   text-align: center;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  border: 2px rgb(212, 175, 55) solid;
 }
 
 header h1{
@@ -46,16 +44,14 @@ header h1{
   font-family: "Tangerine", cursive;
   font-weight: 400;
   font-style: normal;
-  margin: 0;
 }
 
 .hero-text{
   background-color: #EDE8D0;
+  border: 2px rgb(212, 175, 55) solid;
   /* font is slanted so padding is uneven */
-  padding-right: 15px;
-  padding-left: 13px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
+  margin: auto;
   border-radius: 8px;
   text-align: center;
 }
@@ -65,15 +61,15 @@ header h1{
 .navbar {
   background-color: #EDE8D0;
   padding: 10px 0;
-  margin: 0;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  border-bottom: 2px solid rgb(212, 175, 55);
+  border-top: 2px solid rgb(212, 175, 55);
+  border-left: 2px rgb(212, 175, 55) solid;
+  border-right: 2px rgb(212, 175, 55) solid;
   position: sticky;
   top: 0;
 }
 
-/* Flex Container for Logo + Links */
 .nav-container {
   margin: auto;
   display: flex;
@@ -82,14 +78,12 @@ header h1{
   padding: 0 10px;
 }
 
-/* Navigation Links List */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 20px;
 }
 
-/* Individual Link Items */
 .nav-links li {
   position: relative;
 }
@@ -123,7 +117,6 @@ header h1{
   border-radius: 8px;
 }
 
-/* Dropdown Links */
 .dropdown-content a {
   padding: 10px;
   font-size: 15px;
@@ -184,8 +177,9 @@ header h1{
 }
 
 .gallery-wrapper {
-  max-height: 600px; /* adjust based on screen */
+  max-height: 600px;
   overflow-y: auto;
+  margin: 40px;
 }
 
 .home-gallery {
@@ -203,7 +197,6 @@ header h1{
   border-radius: 8px;
   padding: 15px;
   text-align: center;
-  margin: 20px;
   flex: 0 0 auto;
   scroll-snap-align: start;
   width: 300px;

@@ -75,10 +75,10 @@ def location():
     db = get_db()
     # Just dumping my location data right now
     cur = db.execute("""
-    SELECT 
+    SELECT
     Artwork.art_name,
     Artwork.type,
-    FoundLocation.found_location, 
+    FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
@@ -94,11 +94,11 @@ def time_period():
     db = get_db()
     # Just dumping my time_period data right now
     cur = db.execute("""
-    SELECT 
-    Artwork.name
-    Artwork.type
-    Artowrk.years
-    Century.century
+    SELECT
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    Century.century,
     Century.time_period
     FROM Artwork
     JOIN Century ON Artwork.century_id=Century.id;
