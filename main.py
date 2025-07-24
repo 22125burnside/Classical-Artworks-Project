@@ -107,6 +107,12 @@ def time_period():
     return render_template("time_period.html", title="Time Period", art=art)
 
 
+# Error 404 page
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html"), 404
+
+
 if __name__ == '__main__':
     # TAKE THIS BIT OUT BEFORE SUMBIT
     app.run(debug=True)

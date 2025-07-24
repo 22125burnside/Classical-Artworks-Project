@@ -25,7 +25,7 @@
         <div class="home-gallery">
             {% for row in art if row.type|lower == art_type%}
             <div class="home-card">
-                <div class="home-card-name">
+                <div class="home-card-name">{{ row.art_name }}</div>
                     {% if row.image %}
                         <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
                     {% else %}
@@ -38,7 +38,6 @@
                         <td>Found Location: {{ row.found_location }}</td><br>
                         <td>Current Location: {{ row.current_location }}</td><br>
                     </div>
-                </div>
             </div>
             {% endfor %}
         </div>

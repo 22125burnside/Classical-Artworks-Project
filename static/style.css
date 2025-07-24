@@ -227,3 +227,21 @@ header h1{
   height: 300px;
 }
 /* Home Page cards end */
+
+/* error page */
+.error {
+  background-color: aliceblue;
+  text-align: center;
+  padding-top: 100px;
+  font-size: 20px;
+  color: black;
+}
+
+.error_404 {
+  font-size: 72px;
+  color: grey;
+}
+
+.return_home {
+  text-decoration: none;
+}
