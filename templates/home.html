@@ -32,13 +32,15 @@
                         <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
                     {% endif %}
                     <div class="home-card-details">
-                        <td>Type: {{ row.type }}</td><br>
-                        <td>Date made: {{ row.years }}</td><br>
-                        <td>Century: {{ row.century }}</td><br>
-                        <td>Found Location: {{ row.found_location }}</td><br>
-                        <td>Current Location: {{ row.current_location }}</td><br>
+                        <td><b>Type:</b> {{ row.type }}</td><br>
+                        <td><b>Date made:</b> {{ row.years }}</td><br>
+                        <td><b>Century:</b> {{ row.century }}</td><br>
+                        <td><b>Found Location:</b> {{ row.found_location }}</td><br>
+                        <td><b>Current Location:</b> {{ row.current_location }}</td><br>
+                        <!-- Changing the wording later or making it so you can just click on the card itself -->
+                        <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
                     </div>
-            </div>
+                </div>
             {% endfor %}
         </div>
     </div>

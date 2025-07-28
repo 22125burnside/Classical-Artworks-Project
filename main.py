@@ -27,7 +27,9 @@ def close_db(error):
 def home():
     db = get_db()
     cur = db.execute("""
-    SELECT Artwork.art_name,
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
     Artwork.type,
     Artwork.years,
     Artwork.image,
@@ -105,6 +107,15 @@ def time_period():
     """)
     art = cur.fetchall()
     return render_template("time_period.html", title="Time Period", art=art)
+
+
+@app.route('/seperate_artworks/<int:id>')
+def seperate_artworks(id):
+    db = get_db()
+    cursor = db.execute("SELECT * FROM Artwork WHERE id = ?", (id,))
+    art = cursor.fetchall()
+    db.close()
+    return render_template('seperate_artworks.html', art=art)
 
 
 # Error 404 page

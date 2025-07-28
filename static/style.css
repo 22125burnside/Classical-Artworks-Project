@@ -177,7 +177,7 @@ header h1{
 }
 
 .gallery-wrapper {
-  max-height: 600px;
+  max-height: 700px;
   overflow-y: auto;
   margin: 40px;
 }
@@ -204,8 +204,15 @@ header h1{
 
 .home-card-details {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 16px;
   text-align: left;
+  text-decoration: none;
+  color: black;
+}
+
+.link{
+  text-decoration: none;
+  color: grey;
 }
 
 .home-card-name {
