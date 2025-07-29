@@ -32,7 +32,6 @@ def home():
     Artwork.art_name,
     Artwork.type,
     Artwork.years,
-    Artwork.image,
     Century.century,
     Century.time_period,
     FoundLocation.found_location,
@@ -40,13 +39,14 @@ def home():
     FROM Artwork
     JOIN Century ON Artwork.century_id=Century.id
     JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    ORDER BY Artwork.art_name ASC;
     """)
     art = cur.fetchall()
     return render_template("home.html", title="Home", art=art)
 
 
-# Might delete later as kinda the same as the gallery
+# Might delete later as kinda the same as the home page
 @app.route('/all_artworks')
 def all_artworks():
     db = get_db()
@@ -84,7 +84,8 @@ def location():
     CurrentLocation.current_location
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id;
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    ORDER BY Artwork.art_name ASC;
     """)
     art = cur.fetchall()
     return render_template("locations.html", title="Locations", art=art)

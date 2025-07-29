@@ -26,11 +26,7 @@
             {% for row in art if row.type|lower == art_type%}
             <div class="home-card">
                 <div class="home-card-name">{{ row.art_name }}</div>
-                    {% if row.image %}
-                        <img class="card-image" src="{{ url_for('static', filename=row['image']) }}" alt="{{ row['art_name'] }}">
-                    {% else %}
-                        <img class="card-no-image" src="static/images/placeholder.png" alt="no image avaliable">
-                    {% endif %}
+                    <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
                     <div class="home-card-details">
                         <td><b>Type:</b> {{ row.type }}</td><br>
                         <td><b>Date made:</b> {{ row.years }}</td><br>
