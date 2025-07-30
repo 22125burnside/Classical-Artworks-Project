@@ -16,18 +16,19 @@
             with details on origins, current locations, time period, and people featured.
         </p>
     </div>
-    {% set art_types = ['fresco', 'vase', 'sculpture', 'architecture', 'relief', 'mosaic', 'jewellery']%}
-    {% for art_type in art_types%}
     <div class="section-header">
-        <h2 class="section-header-words">{{ art_type|capitalize }}</h2>
+        <!-- Based off of top 20 most famous -->
+        <h2 class="section-header-words">Featured Artworks</h2>
     </div>
     <div class="gallery-wrapper">
         <div class="home-gallery">
-            {% for row in art if row.type|lower == art_type%}
+            {% for row in art %}
             <div class="home-card">
                 <div class="home-card-name">{{ row.art_name }}</div>
                     <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
                     <div class="home-card-details">
+                        <td><b>Type:</b> {{ row.type }}</td><br>
+                        <td><b>Date made:</b> {{ row.years }}</td><br>
                         <td><b>Type:</b> {{ row.type }}</td><br>
                         <td><b>Date made:</b> {{ row.years }}</td><br>
                         <td><b>Century:</b> {{ row.century }}</td><br>
@@ -40,7 +41,6 @@
             {% endfor %}
         </div>
     </div>
-    {% endfor %}
 </body>
 </html>
 {% endblock %}

@@ -26,7 +26,9 @@ def close_db(error):
 @app.route("/")
 def home():
     db = get_db()
-    cur = db.execute("""
+    featured = (20, 15, 14, 4, 5, 40, 7, 6, 49, 2, 3, 47, 46, 26, 27, 16, 8, 17, 21, 19)
+    placeholders = ','.join('?' for _ in featured)
+    query = f"""
     SELECT
     Artwork.id,
     Artwork.art_name,
@@ -37,13 +39,27 @@ def home():
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
-    JOIN Century ON Artwork.century_id=Century.id
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    WHERE Artwork.id IN ({placeholders})
     ORDER BY Artwork.art_name ASC;
-    """)
+    """
+    cur = db.execute(query, featured)
     art = cur.fetchall()
     return render_template("home.html", title="Home", art=art)
+
+
+# testing for home page:
+@app.route('/specific_artworks')
+def specific_artworks():
+    db = get_db()
+    ids = (1, 4, 7, 9, 29)
+    placeholders = ','.join('?' for _ in ids)
+    query = f"SELECT * FROM Artwork WHERE id IN ({placeholders})"
+    cur = db.execute(query, ids)
+    art = cur.fetchall()
+    return render_template("specific.html", title="Tester", art=art)
 
 
 # Might delete later as kinda the same as the home page
