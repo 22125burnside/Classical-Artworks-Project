@@ -156,10 +156,50 @@ header h1{
   text-align: center;
 }
 
-/* The sections in the home page */
+.home-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.home-card {
+  width: 300px;
+  background-color: #EDE8D0;
+  border: 2px rgb(212, 175, 55) solid;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  margin: 20px;
+}
+
+.home-card-details {
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: left;
+  text-decoration: none;
+  color: black;
+}
+
+.home-card-name {
+  font-size: 18px;
+  margin: 10px;
+}
+
+.home-card-image {
+  width: 100%;
+  object-fit: cover;
+  height: 300px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+/* All Artworks css */
+/* The sections in the all artworks page */
 .section-header {
   width: 60%;
-  margin: auto;
+  margin: 30px auto;
   text-align: center;
   background-color: #EDE8D0;
   width: 70%;
@@ -182,7 +222,7 @@ header h1{
   margin: 40px;
 }
 
-.home-gallery {
+.all-gallery {
   display: flex;
   overflow-x: auto;
   gap: 20px;
@@ -191,7 +231,7 @@ header h1{
   scroll-snap-type: x mandatory;
 }
 
-.home-card {
+.all-card {
   background-color: #EDE8D0;
   border: 2px rgb(212, 175, 55) solid;
   border-radius: 8px;
@@ -202,7 +242,7 @@ header h1{
   width: 300px;
 }
 
-.home-card-details {
+.all-card-details {
   margin-top: 10px;
   font-size: 16px;
   text-align: left;
@@ -215,12 +255,12 @@ header h1{
   color: grey;
 }
 
-.home-card-name {
+.all-card-name {
   font-size: 18px;
   margin: 10px;
 }
 
-.card-image {
+.all-card-image {
   width: 100%;
   object-fit: cover;
   height: 300px;
@@ -237,18 +277,38 @@ header h1{
 
 /* error page */
 .error {
-  background-color: aliceblue;
+  background-color: #EDE8D0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  padding-top: 100px;
-  font-size: 20px;
-  color: black;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
+
 
 .error_404 {
   font-size: 72px;
-  color: grey;
+  color: #444;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .return_home {
+  font-family: "Tangerine", cursive;
+  margin: 20px auto;
+  font-size: 28px;
   text-decoration: none;
+  color: rgb(212, 175, 55);
+  border: 2px solid rgb(212, 175, 55);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.return_home:hover {
+  background-color: rgb(212, 175, 55);
+  color: white;
 }

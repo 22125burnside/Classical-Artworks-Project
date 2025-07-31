@@ -1,6 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for row in art %}
-        <p>{{row.art_name}}</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Locations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% for location in locations %}
+    <div class="section-header">
+        <h2 class="section-header-words">{{ location }}</h2>
+    </div>
+    <div class="gallery-wrapper">
+        <!-- Same layout as the all artworks page for now -->
+        <div class="all-gallery">
+            {% for row in art if row.currentlocation == location %}
+            <div class="all_card">
+                <div class="all-card-name">{{ row.art_name }}</div>
+                <img class="all-card-image"
+                    src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}"
+                    alt="{{ row.art_name }}">
+                <div class="all-card-details">
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
     {% endfor %}
+</body>
+</html>
 {% endblock %}

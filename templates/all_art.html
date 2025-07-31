@@ -4,8 +4,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>All Artworks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     {% set art_types = ['fresco', 'vase', 'sculpture', 'architecture', 'relief', 'mosaic', 'jewellery']%}
@@ -14,17 +14,19 @@
         <h2 class="section-header-words">{{ art_type|capitalize }}</h2>
     </div>
     <div class="gallery-wrapper">
-        <div class="home-gallery">
+        <div class="all-gallery">
             {% for row in art if row.type|lower == art_type%}
-            <div class="home-card">
-                <div class="home-card-name">{{ row.art_name }}</div>
-                    <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
-                    <div class="home-card-details">
+            <div class="all-card">
+                <div class="all-card-name">{{ row.art_name }}</div>
+                    <img class="all-card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
+                    <div class="all-card-details">
                         <td><b>Type:</b> {{ row.type }}</td><br>
                         <td><b>Date made:</b> {{ row.years }}</td><br>
                         <td><b>Century:</b> {{ row.century }}</td><br>
                         <td><b>Found Location:</b> {{ row.found_location }}</td><br>
                         <td><b>Current Location:</b> {{ row.current_location }}</td><br>
+                        <!-- Changing the wording later or making it so you can just click on the card itself -->
+                        <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
                     </div>
                 </div>
             {% endfor %}

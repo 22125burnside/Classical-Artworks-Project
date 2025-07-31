@@ -62,19 +62,19 @@ def specific_artworks():
     return render_template("specific.html", title="Tester", art=art)
 
 
-# Might delete later as kinda the same as the home page
+# Displays all the artworks 
 @app.route('/all_artworks')
 def all_artworks():
     db = get_db()
     cur = db.execute("""
     SELECT
-        Artwork.art_name,
-        Artwork.type,
-        FoundLocation.found_location,
-        CurrentLocation.current_location,
-        GROUP_CONCAT(Person.name || ' (' || Person.role || ')', ', ') AS people,
-        Century.century,
-        Century.time_period
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
@@ -94,6 +94,7 @@ def location():
     # Just dumping my location data right now
     cur = db.execute("""
     SELECT
+    Artwork.id,
     Artwork.art_name,
     Artwork.type,
     FoundLocation.found_location,
@@ -101,10 +102,11 @@ def location():
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
-    ORDER BY Artwork.art_name ASC;
+    ORDER BY CurrentLocation.current_location ASC;
     """)
+    locations = sorted(set(row['current_location'] for row in art))
     art = cur.fetchall()
-    return render_template("locations.html", title="Locations", art=art)
+    return render_template("locations.html", title="Locations", art=art, locations=locations)
 
 
 # My time period page
