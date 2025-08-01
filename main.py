@@ -71,6 +71,7 @@ def all_artworks():
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
+    Artwork.years,
     FoundLocation.found_location,
     CurrentLocation.current_location,
     Century.century,
@@ -97,6 +98,7 @@ def location():
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
+    Artwork.years, 
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
@@ -104,8 +106,8 @@ def location():
     JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
     ORDER BY CurrentLocation.current_location ASC;
     """)
-    locations = sorted(set(row['current_location'] for row in art))
     art = cur.fetchall()
+    locations = sorted(set(row['current_location'] for row in art))
     return render_template("locations.html", title="Locations", art=art, locations=locations)
 
 

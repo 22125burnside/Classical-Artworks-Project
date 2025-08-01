@@ -136,6 +136,66 @@ header h1{
   display: block;
 }
 
+/* Repeated css in multiple pages */
+.card-details {
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: left;
+  text-decoration: none;
+  color: black;
+}
+
+.link{
+  text-decoration: none;
+  color: grey;
+}
+
+.card-name {
+  font-size: 18px;
+  margin: 10px;
+}
+
+.card-image {
+  width: 100%;
+  object-fit: cover;
+  height: 350px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.section-header {
+  background-color: #EDE8D0;
+  padding: 10px 20px;
+  margin-top: 40px;
+  border-left: 4px solid rgb(212, 175, 55);
+}
+
+.section-header-words {
+  font-family: "Tangerine", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 60px;
+  color: #333;
+}
+
+.gallery-wrapper {
+  max-height: 700px;
+  overflow-y: auto;
+  margin: 40px;
+}
+
+.card-no-image {
+  width: 100%;
+  object-fit: cover;
+  height: 300px;
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, rgb(212, 175, 55), transparent);
+  margin: 30px 0;
+}
+
 /* Home page css */
 /* probably delete or move intro later */
 .intro {
@@ -174,55 +234,9 @@ header h1{
   margin: 20px;
 }
 
-.home-card-details {
-  margin-top: 10px;
-  font-size: 16px;
-  text-align: left;
-  text-decoration: none;
-  color: black;
-}
-
-.home-card-name {
-  font-size: 18px;
-  margin: 10px;
-}
-
-.home-card-image {
-  width: 100%;
-  object-fit: cover;
-  height: 300px;
-  border-radius: 8px;
-  margin-top: 5px;
-}
-
 /* All Artworks css */
 /* The sections in the all artworks page */
-.section-header {
-  width: 60%;
-  margin: 30px auto;
-  text-align: center;
-  background-color: #EDE8D0;
-  width: 70%;
-  padding: 15px;
-  border: 2px rgb(212, 175, 55) solid;
-  border-radius: 8px;
-}
-
-.section-header-words {
-  font-family: "Tangerine", cursive;
-  font-weight: 400;
-  font-style: normal;
-  text-align: center;
-  font-size: 60px;
-}
-
-.gallery-wrapper {
-  max-height: 700px;
-  overflow-y: auto;
-  margin: 40px;
-}
-
-.all-gallery {
+.all-art-gallery {
   display: flex;
   overflow-x: auto;
   gap: 20px;
@@ -231,7 +245,7 @@ header h1{
   scroll-snap-type: x mandatory;
 }
 
-.all-card {
+.all-art-card {
   background-color: #EDE8D0;
   border: 2px rgb(212, 175, 55) solid;
   border-radius: 8px;
@@ -242,38 +256,26 @@ header h1{
   width: 300px;
 }
 
-.all-card-details {
-  margin-top: 10px;
-  font-size: 16px;
-  text-align: left;
-  text-decoration: none;
-  color: black;
+/* Locations css */
+.location-gallery {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 20px;
+  max-width: 100%;
+  scroll-snap-type: x mandatory;
 }
 
-.link{
-  text-decoration: none;
-  color: grey;
-}
-
-.all-card-name {
-  font-size: 18px;
-  margin: 10px;
-}
-
-.all-card-image {
-  width: 100%;
-  object-fit: cover;
-  height: 300px;
+.location-card{
+  background-color: #EDE8D0;
+  border: 2px rgb(212, 175, 55) solid;
   border-radius: 8px;
-  margin-top: 5px;
+  padding: 15px;
+  text-align: center;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 300px;
 }
-
-.card-no-image {
-  width: 100%;
-  object-fit: cover;
-  height: 300px;
-}
-/* Home Page cards end */
 
 /* error page */
 .error {
@@ -287,7 +289,6 @@ header h1{
   padding: 40px 20px;
   box-sizing: border-box;
 }
-
 
 .error_404 {
   font-size: 72px;
