@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
 
-/* Maybe change the colours as they are not the most aesthetic */
+/* Change the colours as they are not the most aesthetic */
 
 * {
   margin: 0;
@@ -21,7 +21,7 @@ h1{
   padding: 10px;
 }
 
-  /* Header image */
+/* Header code */
 header{
   /* change background-color to a picture */
   background-image: url(/static/Images/ancient-rome.jpeg);
@@ -57,7 +57,6 @@ header h1{
 }
 
 /* Nav bar */
-/* Navigation Bar Container */
 .navbar {
   background-color: #EDE8D0;
   padding: 10px 0;
@@ -197,7 +196,6 @@ header h1{
 }
 
 /* Home page css */
-/* probably delete or move intro later */
 .intro {
   width: 60%;
   margin: 40px auto;
@@ -235,7 +233,6 @@ header h1{
 }
 
 /* All Artworks css */
-/* The sections in the all artworks page */
 .all-art-gallery {
   display: flex;
   overflow-x: auto;
@@ -276,6 +273,8 @@ header h1{
   scroll-snap-align: start;
   width: 300px;
 }
+
+/* Time period css */
 
 /* error page */
 .error {

@@ -26,6 +26,7 @@ def close_db(error):
 @app.route("/")
 def home():
     db = get_db()
+    # Top 20 most popular artworks/architecture (might change later)
     featured = (20, 15, 14, 4, 5, 40, 7, 6, 49, 2, 3, 47, 46, 26, 27, 16, 8, 17, 21, 19)
     placeholders = ','.join('?' for _ in featured)
     query = f"""
@@ -48,18 +49,6 @@ def home():
     cur = db.execute(query, featured)
     art = cur.fetchall()
     return render_template("home.html", title="Home", art=art)
-
-
-# testing for home page:
-@app.route('/specific_artworks')
-def specific_artworks():
-    db = get_db()
-    ids = (1, 4, 7, 9, 29)
-    placeholders = ','.join('?' for _ in ids)
-    query = f"SELECT * FROM Artwork WHERE id IN ({placeholders})"
-    cur = db.execute(query, ids)
-    art = cur.fetchall()
-    return render_template("specific.html", title="Tester", art=art)
 
 
 # Displays all the artworks 
@@ -118,18 +107,23 @@ def time_period():
     # Just dumping my time_period data right now
     cur = db.execute("""
     SELECT
+    Artwork.id,
     Artwork.art_name,
     Artwork.type,
     Artwork.years,
     Century.century,
     Century.time_period
     FROM Artwork
-    JOIN Century ON Artwork.century_id=Century.id;
+    JOIN Century ON Artwork.century_id=Century.id
+    ORDER BY years ASC;
     """)
     art = cur.fetchall()
-    return render_template("time_period.html", title="Time Period", art=art)
+    # Sort header by time periods 
+    time_periods = sorted(set(row['time_period'] for row in art))
+    return render_template("time_period.html", title="Time Period", art=art, time_periods=time_periods)
 
 
+# All the seperate individual pages for each artwork
 @app.route('/seperate_artworks/<int:id>')
 def seperate_artworks(id):
     db = get_db()

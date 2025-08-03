@@ -1,42 +1,33 @@
+<!-- Get feedback on aesthetics -->
 {% extends "layout.html" %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Locations</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    {% for location in locations %}
-    <div class="section-header">
-        <h2 class="section-header-words">{{ location }}</h2>
-    </div>
-    <div class="gallery-wrapper">
-        <!-- Same layout as the all artworks page for now -->
-        <div class="location-gallery">
-            {% for row in art if row.current_location == location %}
-            <div class="location-card">
-                <div class="card-name">{{ row.art_name }}</div>
-                <img class="card-image"
-                    src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}"
-                    alt="{{ row.art_name }}">
-                <div class="card-details">
-                    <td><b>Type:</b>{{ row.type }}</td><br>
-                    <td><b>Date made:</b> {{ row.years }}</td><br>
-                    <td><b>Found Location:</b> {{ row.found_location }}</td><br>
-                    <!-- Changing the wording later or making it so you can just click on the card itself -->
-                    <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
-                </div>
+<title>Locations</title>
+{% for location in locations %}
+<div class="section-header">
+    <h2 class="section-header-words">{{ location }}</h2>
+</div>
+<div class="gallery-wrapper">
+    <div class="location-gallery">
+        {% for row in art if row.current_location == location %}
+        <div class="location-card">
+            <div class="card-name">{{ row.art_name }}</div>
+            <img class="card-image"
+                src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}"
+                alt="{{ row.art_name }}">
+            <div class="card-details">
+                <td><b>Type:</b>{{ row.type }}</td><br>
+                <td><b>Date made:</b> {{ row.years }}</td><br>
+                <td><b>Found Location:</b> {{ row.found_location }}</td><br>
+                <!-- Changing the wording later or making it so you can just click on the card itself -->
+                <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
-    <!-- Section divider -->
-    {% if not loop.last %}
+</div>
+<!-- Section divider -->
+{% if not loop.last %}
     <div class="section-divider"></div>
-    {% endif %}
-    {% endfor %}
-</body>
-</html>
+{% endif %}
+{% endfor %}
 {% endblock %}
