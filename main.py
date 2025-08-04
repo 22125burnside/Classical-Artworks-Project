@@ -96,6 +96,7 @@ def location():
     ORDER BY CurrentLocation.current_location ASC;
     """)
     art = cur.fetchall()
+    # Sort headers by current locations
     locations = sorted(set(row['current_location'] for row in art))
     return render_template("locations.html", title="Locations", art=art, locations=locations)
 
@@ -104,7 +105,6 @@ def location():
 @app.route('/time_period')
 def time_period():
     db = get_db()
-    # Just dumping my time_period data right now
     cur = db.execute("""
     SELECT
     Artwork.id,
@@ -115,12 +115,33 @@ def time_period():
     Century.time_period
     FROM Artwork
     JOIN Century ON Artwork.century_id=Century.id
-    ORDER BY years ASC;
+    ORDER BY years DESC;
     """)
     art = cur.fetchall()
     # Sort header by time periods 
-    time_periods = sorted(set(row['time_period'] for row in art))
+    time_periods = set(row['time_period'] for row in art)
     return render_template("time_period.html", title="Time Period", art=art, time_periods=time_periods)
+
+
+# Page for all the characters 
+@app.route('/characters')
+def characters():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id, 
+    Artwork.art_name,
+    ArtworkPerson.aid,
+    ArtworkPerson.pid,
+    Person.id,
+    Person.role,
+    Person.name
+    FROM Artwork
+    JOIN ArtworkPerson ON Artwork.id=ArtworkPerson.aid
+    JOIN Person ON ArtworkPerson.pid=Person.id
+    """)
+    art = cur.fetchall()
+    return render_template('character.html', title="People", art=art)
 
 
 # All the seperate individual pages for each artwork

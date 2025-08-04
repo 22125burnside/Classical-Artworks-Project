@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+<title>Character</title>
+{% for row in art %}
+<p>{{ row.name }}</p>
+{% endfor %}
+{% endblock %}

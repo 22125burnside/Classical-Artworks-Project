@@ -10,15 +10,15 @@
     <div class="location-gallery">
     {% for row in art if row.time_period == time_period %}
         <div class="location-card">
-            <div class="card-name">{{ row.time_period }}</div>
+            <div class="card-name">{{ row.art_name }}</div>
             <img class="card-image"
                 src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}"
                 alt="{{ row.art_name }}">
             <div class="card-details">
-                <td><b>Type:</b>{{ row.type }}</td>
-                <td><bd>Date Made:</bd>{{ row.years }}</td>
-                <td><b>Century Made:</b>{{ row.century }}</td>
-                <td><b>Time Period Made::</b>{{ row.time_period }}</td>
+                <td><b>Type: </b>{{ row.type }}</td><br>
+                <td><bd>Date Made: </bd>{{ row.years }}</td><br>
+                <td><b>Century Made: </b>{{ row.century }}</td><br>
+                <td><b>Time Period Made: </b>{{ row.time_period }}</td><br>
                 <!-- Changing the wording later -->
                 <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
             </div>
