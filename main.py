@@ -170,9 +170,10 @@ def frescoes():
 def seperate_artworks(id):
     db = get_db()
     cursor = db.execute("SELECT * FROM Artwork WHERE id = ?", (id,))
-    art = cursor.fetchall()
+    # Only fetching one piece of info
+    row = cursor.fetchone()
     db.close()
-    return render_template('seperate.html', art=art)
+    return render_template('seperate.html', title=row["art_name"], row=row)
 
 
 # Error 404 page

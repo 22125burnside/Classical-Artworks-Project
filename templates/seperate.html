@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<!-- Change to actual name of artwork later -->
-<title>Seperate Artworks</title>
-{% for row in art %}
-    <p>This is the {{row.art_name}} page</p>
-{% endfor %}
+<div class="section-header">
+    <h2 class="section-header-words">{{ row.art_name }}</h2>
+</div>
 {% endblock %}
