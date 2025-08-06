@@ -1,7 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
-<title>Character</title>
-{% for row in art %}
-<p>{{ row.name }}</p>
-{% endfor %}
+<title>Characters</title>
+<div class="person-gallery">
+    {% for row in people %}
+    <div class="person-card">
+        <div class="card-name">{{ row.name }}</div>
+        <div class="card-details">
+            <p><b class="bold">Role:</b> {{ row.role }}</p><br>
+            <p><b class="bold">Artworks featuring them: </b></p>
+            <ul class="artwork-list">
+                {% for artwork in row.artworks.split(',') %}
+                <li><a class="character-link" href="{{ url_for('seperate_artworks', id=row.id) }}">{{ artwork.strip() }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

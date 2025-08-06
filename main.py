@@ -68,8 +68,6 @@ def all_artworks():
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
-    JOIN Person ON ArtworkPerson.pid = Person.id
     JOIN Century ON Artwork.century_id = Century.id
     GROUP BY Artwork.id
 """)
@@ -128,20 +126,43 @@ def time_period():
 def characters():
     db = get_db()
     cur = db.execute("""
-    SELECT
-    Artwork.id, 
-    Artwork.art_name,
-    ArtworkPerson.aid,
-    ArtworkPerson.pid,
-    Person.id,
+    SELECT 
+    Artwork.id,
+    Person.id AS person_id,
+    Person.name,
     Person.role,
-    Person.name
-    FROM Artwork
-    JOIN ArtworkPerson ON Artwork.id=ArtworkPerson.aid
-    JOIN Person ON ArtworkPerson.pid=Person.id
+    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks
+    FROM Person
+    JOIN ArtworkPerson ON Person.id = ArtworkPerson.pid
+    JOIN Artwork ON Artwork.id = ArtworkPerson.aid
+    GROUP BY Person.id
+    ORDER BY Person.name ASC;
     """)
+    people = cur.fetchall()
+    return render_template('character.html', title="People", people=people)
+
+
+@app.route('/frescoes')
+def frescoes():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Fresco'
+""")
     art = cur.fetchall()
-    return render_template('character.html', title="People", art=art)
+    return render_template("fresco.html", title="Frescoes", art=art)
 
 
 # All the seperate individual pages for each artwork
@@ -151,7 +172,7 @@ def seperate_artworks(id):
     cursor = db.execute("SELECT * FROM Artwork WHERE id = ?", (id,))
     art = cursor.fetchall()
     db.close()
-    return render_template('seperate_artworks.html', art=art)
+    return render_template('seperate.html', art=art)
 
 
 # Error 404 page
