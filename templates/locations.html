@@ -14,9 +14,9 @@
                 src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}"
                 alt="{{ row.art_name }}">
             <div class="card-details">
-                <td><b>Type: </b>{{ row.type }}</td><br>
-                <td><b>Date made: </b> {{ row.years }}</td><br>
-                <td><b>Found Location: </b> {{ row.found_location }}</td><br>
+                <td><b class="bold">Type: </b>{{ row.type }}</td><br>
+                <td><b class="bold">Date made: </b> {{ row.years }}</td><br>
+                <td><b class="bold">Found Location: </b> {{ row.found_location }}</td><br>
                 <!-- Changing the wording later or making it so you can just click on the card itself -->
                 <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
             </div>

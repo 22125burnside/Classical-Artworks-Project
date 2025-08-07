@@ -160,9 +160,147 @@ def frescoes():
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
     WHERE Artwork.type = 'Fresco'
-""")
+    """)
     art = cur.fetchall()
     return render_template("fresco.html", title="Frescoes", art=art)
+
+
+@app.route('/vases')
+def vases():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Vase'
+    """)
+    art = cur.fetchall()
+    return render_template("vase.html", title="Vases", art=art)
+
+
+@app.route('/sculptures')
+def sculptures():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Sculpture'
+    """)
+    art = cur.fetchall()
+    return render_template("sculpture.html", title="Sculptures", art=art)
+
+
+@app.route('/architecture')
+def architect():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Architecture'
+    """)
+    art = cur.fetchall()
+    return render_template("architect.html", title="Architecture", art=art)
+
+
+@app.route('/reliefs')
+def reliefs():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Relief'
+    """)
+    art = cur.fetchall()
+    return render_template("relief.html", title="Reliefs", art=art)
+
+
+@app.route('/mosaics')
+def mosaics():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Mosaic'
+    """)
+    art = cur.fetchall()
+    return render_template("mosaics.html", title="Mosaics", art=art)
+
+
+@app.route('/jewellery')
+def jewellery():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    Century.century,
+    Century.time_period
+    FROM Artwork
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE Artwork.type = 'Jewellery'
+    """)
+    art = cur.fetchall()
+    return render_template("jewellery.html", title="Jewellery", art=art)
 
 
 # All the seperate individual pages for each artwork
