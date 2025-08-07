@@ -3,4 +3,16 @@
 <div class="section-header">
     <h2 class="section-header-words">{{ row.art_name }}</h2>
 </div>
+<div class="individual-gallery">
+    <div class="individual-card">
+        <img class="individual-card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
+        <div class="individual-card-details">
+            <td><b class="bold">Type:</b> {{ row.type }}</td><br>
+            <td><b class="bold">Date made:</b> {{ row.years }}</td><br>
+            <td><b class="bold">Century:</b> {{ row.century }}</td><br>
+            <td><b class="bold">Found Location:</b> {{ row.found_location }}</td><br>
+            <td><b class="bold">Current Location:</b> {{ row.current_location }}</td><br>
+        </div>
+    </div>
+</div>
 {% endblock %}

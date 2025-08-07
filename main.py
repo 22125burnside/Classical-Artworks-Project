@@ -307,9 +307,19 @@ def jewellery():
 @app.route('/seperate_artworks/<int:id>')
 def seperate_artworks(id):
     db = get_db()
-    cursor = db.execute("SELECT * FROM Artwork WHERE id = ?", (id,))
-    # Only fetching one piece of info
+    cursor = db.execute("""
+    SELECT * 
+    FROM Artwork 
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
+    JOIN Person ON ArtworkPerson.pid = Person.id
+    WHERE Artwork.id = ?""", (id,))
+    # Only fetching one piece of info (the artwork)
     row = cursor.fetchone()
+    if row is None:
+        return render_template("error.html")
     db.close()
     return render_template('seperate.html', title=row["art_name"], row=row)
 
