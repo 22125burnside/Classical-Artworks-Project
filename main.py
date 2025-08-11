@@ -1,4 +1,4 @@
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, abort
 import sqlite3
 
 
@@ -116,7 +116,7 @@ def time_period():
     ORDER BY years DESC;
     """)
     art = cur.fetchall()
-    # Sort header by time periods 
+    # Sort header by time periods
     time_periods = set(row['time_period'] for row in art)
     return render_template("time_period.html", title="Time Period", art=art, time_periods=time_periods)
 
@@ -308,8 +308,8 @@ def jewellery():
 def seperate_artworks(id):
     db = get_db()
     cursor = db.execute("""
-    SELECT * 
-    FROM Artwork 
+    SELECT *
+    FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
@@ -319,7 +319,7 @@ def seperate_artworks(id):
     # Only fetching one piece of info (the artwork)
     row = cursor.fetchone()
     if row is None:
-        return render_template("error.html")
+        abort(404)
     db.close()
     return render_template('seperate.html', title=row["art_name"], row=row)
 
