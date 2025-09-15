@@ -308,6 +308,21 @@ header h1{
   color: black;
 }
 
+/* Time period page */
+.information{
+  font-size: 18px;
+  background-color: #EDE8D0;
+  border: 2px rgb(212, 175, 55) solid;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 100px 20px 100px;
+}
+
+.more-artworks{
+  text-decoration: none;
+  color: grey;
+}
+
 /* Individual artwork pages */
 .individual-card{
   display: flex;

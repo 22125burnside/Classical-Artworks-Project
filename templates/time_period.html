@@ -1,33 +1,84 @@
 {% extends "layout.html" %}
 {% block content %}
-{% for time_period in time_periods %}
 <div class="section-header">
-    <h2 class="section-header-words">{{ time_period }}</h2>
+    <h2 class="section-header-words">Archaic Period</h2>
 </div>
-<div class="gallery-wrapper">
-    <!-- Same css as location page for now -->
-    <div class="location-gallery">
-    {% for row in art if row.time_period == time_period %}
-        <div class="location-card">
-            <div class="card-name">{{ row.art_name }}</div>
-            <img class="card-image"
-                src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}"
-                alt="{{ row.art_name }}">
-            <div class="card-details">
-                <td><b class="bold">Type: </b>{{ row.type }}</td><br>
-                <td><b class="bold">Date Made: </b>{{ row.years }}</td><br>
-                <td><b class="bold">Century Made: </b>{{ row.century }}</td><br>
-                <td><b class="bold">Time Period Made: </b>{{ row.time_period }}</td><br>
-                <!-- Changing the wording later -->
-                <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
-            </div>
-        </div>
-        {% endfor %}
+    <p class="information">
+        The Archaic period was a formative era in ancient Greece, bridging the gap between the rigid geometric styles of earlier centuries and the naturalism of the Classical age.
+        Politically, this was a time when the Greek city-states, or poleis, were developing their distinctive systems of government, 
+        including the early roots of democracy in Athens. Trade and colonization expanded Greek influence across the Mediterranean, bringing cultural exchange and new ideas.<br>
+        <br>
+        In art, the period is especially remembered for its sculpture. Artists created large-scale marble statues known as kouroi (standing male youths) 
+        and korai (clothed female figures), which served both religious and commemorative purposes. These works show a shift from stiff, 
+        stylized forms toward more realistic anatomy, though features like the famous “Archaic smile” remained symbolic rather than naturalistic.<br>
+        <br>
+        Vase painting also flourished, beginning with the black-figure technique, in which silhouetted figures were incised with details, 
+        and later evolving into the more refined red-figure style, which allowed for greater flexibility and realism in depicting movement. 
+        Common themes included mythological tales, heroic legends, athletic contests, and daily life.<br>
+        <br>
+        Overall, the Archaic period was an age of experimentation and innovation, setting the stage for the artistic achievements of Classical Greece.<br>
+        <br>
+        <a class="more-artworks" href="{{ url_for('archaic_period') }}">Click here to see all the artworks from this period</a>       
+    </p>
+
+    <div class="section-header">
+        <h2 class="section-header-words">Classical Period</h2>
     </div>
-</div>
-<!-- Section divider -->
-{% if not loop.last %}
-    <div class="section-divider"></div>
-{% endif %}
-{% endfor %}
+        <p class="information">
+        The Classical period of Greek art is often seen as the high point of ancient artistic achievement. 
+        Following the Persian Wars, Athens emerged as a cultural and political center, and artists sought to express ideals of harmony, balance, and proportion. 
+        Sculpture from this era emphasized naturalism while still reflecting an idealized human form, with masterpieces like Myrons Discobolus and Polykleitos Doryphoros 
+        setting standards for beauty and proportion.<br>
+        <br>
+        Architecture also flourished, with the Parthenon in Athens symbolizing both artistic mastery and civic pride. 
+        Advances in technique allowed for lifelike poses, realistic anatomy, and calm, confident expressions — a sharp contrast to the stiffness of Archaic art.<br>
+        <br>
+        By the later Classical period, artists began experimenting with more movement and emotional depth, leading naturally 
+        into the expressive style of the Hellenistic age. Overall, Classical Greek art captured the balance between realism and idealism, 
+        leaving a profound legacy that has influenced Western art for centuries.<br>
+        <br>
+        <a class="more-artworks" href="{{ url_for('classical_period') }}">Click here to see all the artworks from this period</a>       
+        </p>
+
+    <div class="section-header">
+        <h2 class="section-header-words">Hellenistic Period</h2>
+    </div>
+        <p class="information">
+        The Hellenistic period began after the death of Alexander the Great in 323 BCE and extended until the Roman conquest in 31 BCE. 
+        This was an age of cultural expansion, as Greek art and ideas spread across Egypt, the Near East, and beyond, blending with local traditions.<br>
+        <br>
+        Art from this period is known for its drama, realism, and emotional intensity. 
+        Sculptors broke away from the idealized calm of the Classical style, creating works that showed movement, vulnerability, and expressive detail. 
+        Famous examples include the Laocoön Group and the Winged Victory of Samothrace, which emphasize dynamic poses and theatrical impact.<br>
+        <br>
+        Hellenistic artists also explored a wider range of subjects — from gods and heroes to children, the elderly, and ordinary people
+         — reflecting a more inclusive and human-centered vision of the world. Monumental architecture and urban planning flourished in new centers of power 
+         like Alexandria and Pergamon, further showcasing the grandeur of the age.<br>
+        <br>
+        This was a period of innovation and diversity, where art became more accessible, experimental, and deeply emotional, 
+        setting the stage for Roman adaptations in the centuries that followed.<br>
+        <br>
+        <a class="more-artworks" href="{{ url_for('hellenistic_period') }}">Click here to see all the artworks from this period</a>       
+        </p>
+
+    <div class="section-header">
+        <h2 class="section-header-words">Roman Art Period</h2>
+    </div>
+        <p class="information">
+        Roman art developed under the influence of earlier Greek traditions but grew into a distinctive style that reflected the empires power, 
+        diversity, and practicality. Unlike the idealized forms of Greek art, Roman artists placed a strong emphasis on realism and individuality, 
+        particularly in portraiture. Busts and statues of emperors, politicians, and citizens were created with striking detail, often highlighting age, character, and experience.<br>
+        <br>
+        Architecture was one of Romes greatest achievements. Using innovations like the arch, the dome, and concrete construction, 
+        the Romans built monumental structures such as the Colosseum, aqueducts, triumphal arches, and the Pantheon. These works combined engineering 
+        genius with a sense of grandeur, designed to showcase the strength and unity of the empire.<br>
+        <br>
+        Roman painting and mosaics decorated private homes and public buildings, often depicting mythological scenes, landscapes, daily life,
+        and elaborate decorative patterns. Frescoes in cities like Pompeii and Herculaneum give us vivid insight into Roman domestic culture.<br>
+        <br>
+        Overall, Roman art was practical, political, and celebratory — serving not only as decoration but also as propaganda to communicate Romes dominance and the 
+        authority of its rulers. It blended Greek ideals with Roman innovation, leaving a lasting influence on Western art and architecture.<br>
+        <br>
+        <a class="more-artworks" href="{{ url_for('roman_period') }}">Click here to see all the artworks from this period</a>       
+        </p>
 {% endblock %}

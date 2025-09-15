@@ -27,7 +27,8 @@ def close_db(error):
 def home():
     db = get_db()
     # Top 20 most popular artworks/architecture (might change later)
-    featured = (20, 15, 14, 4, 5, 40, 7, 6, 49, 2, 3, 47, 46, 26, 27, 16, 8, 17, 21, 19)
+    featured = (20, 15, 14, 4, 5, 40, 7, 6, 49, 2, 3,
+                47, 46, 26, 27, 16, 8, 17, 21, 19)
     placeholders = ','.join('?' for _ in featured)
     query = f"""
     SELECT
@@ -51,7 +52,7 @@ def home():
     return render_template("home.html", title="Home", art=art)
 
 
-# Displays all the artworks 
+# Displays all the artworks
 @app.route('/all_artworks')
 def all_artworks():
     db = get_db()
@@ -85,7 +86,7 @@ def location():
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
-    Artwork.years, 
+    Artwork.years,
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
@@ -102,6 +103,12 @@ def location():
 # My time period page
 @app.route('/time_period')
 def time_period():
+    return render_template("time_period.html", title="Time Period")
+
+
+# Archaic period page
+@app.route('/archaic_period')
+def archaic_period():
     db = get_db()
     cur = db.execute("""
     SELECT
@@ -110,23 +117,100 @@ def time_period():
     Artwork.type,
     Artwork.years,
     Century.century,
-    Century.time_period
+    Century.time_period,
+    FoundLocation.found_location,
+    CurrentLocation.current_location
     FROM Artwork
     JOIN Century ON Artwork.century_id=Century.id
+    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    WHERE Century.time_period = 'Archaic Period'
     ORDER BY years DESC;
     """)
     art = cur.fetchall()
-    # Sort header by time periods
-    time_periods = set(row['time_period'] for row in art)
-    return render_template("time_period.html", title="Time Period", art=art, time_periods=time_periods)
+    return render_template('archaic.html', title="Archaic Period Artwork", art=art)
 
 
-# Page for all the characters 
+# Hellenistic period page
+@app.route('/hellenistic_period')
+def hellenistic_period():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    Century.century,
+    Century.time_period,
+    FoundLocation.found_location,
+    CurrentLocation.current_location
+    FROM Artwork
+    JOIN Century ON Artwork.century_id=Century.id
+    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    WHERE Century.time_period = 'Hellenistic Period'
+    ORDER BY years DESC;
+    """)
+    art = cur.fetchall()
+    return render_template('hellenistic.html', title="Hellenistic Period Artwork", art=art)
+
+
+# Roman Art period page
+@app.route('/roman_period')
+def roman_period():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    Century.century,
+    Century.time_period,
+    FoundLocation.found_location,
+    CurrentLocation.current_location
+    FROM Artwork
+    JOIN Century ON Artwork.century_id=Century.id
+    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    WHERE Century.time_period = 'Roman Art'
+    ORDER BY years DESC;
+    """)
+    art = cur.fetchall()
+    return render_template('Roman_art.html', title="Roman Art Period Artwork", art=art)
+
+# Classical art period page
+@app.route('/classical_period')
+def classical_period():
+    db = get_db()
+    cur = db.execute("""
+    SELECT
+    Artwork.id,
+    Artwork.art_name,
+    Artwork.type,
+    Artwork.years,
+    Century.century,
+    Century.time_period,
+    FoundLocation.found_location,
+    CurrentLocation.current_location
+    FROM Artwork
+    JOIN Century ON Artwork.century_id=Century.id
+    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
+    WHERE Century.time_period = 'Classical Period'
+    ORDER BY years DESC;
+    """)
+    art = cur.fetchall()
+    return render_template('classical_art.html', title="Classical Art Period Artwork", art=art)
+
+
+# Page for all the characters
 @app.route('/characters')
 def characters():
     db = get_db()
     cur = db.execute("""
-    SELECT 
+    SELECT
     Artwork.id,
     Person.id AS person_id,
     Person.name,
