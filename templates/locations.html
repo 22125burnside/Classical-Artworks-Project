@@ -1,32 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<!-- I have this split into different countries to make it simpler to read -->
-<!-- Italy -->
-<div class="country-section">
-    <h2>Italy</h2>
-    <div class="location">
-        <strong>Pompeii</strong>
-        <div class="blurb">A wealth of Roman frescoes and artifacts found in the ancient city preserved by the eruption of Mount Vesuvius.</div>
-    </div>
-    <div class="location">
-        <strong>Rome</strong>
-        <div class="blurb">Capital of the Roman Empire, rich in historical sites and artifacts.</div>
-    </div>
-    <div class="location">
-        <strong>Villa of Livia, Prima Porta</strong>
-        <div class="blurb">A luxurious suburban villa famous for its frescoes and gardens.</div>
-    </div>
-    <div class="location">
-        <strong>Vulci & Cerveteri</strong>
-        <div class="blurb">Etruscan towns known for tombs and ancient relics.</div>
-    </div>
-    <div class="location">
-        <strong>Stabiae</strong>
-        <div class="blurb">Roman resort town with villas and frescoes preserved by volcanic ash.</div>
-    </div>
-    <div class="location">
-        <strong>Lazio & Locri</strong>
-        <div class="blurb">Regions rich in Roman and pre-Roman artifacts.</div>
+{% for region in ['Italy', 'Greece', 'Turkey', 'Other'] %}
+<div class="section-header">
+    <h2 class="section-header-words">{{ region }}</h2>
 </div>
+<div class="gallery">
+    {% for location in locations if location.region == region %}
+    <div class="card">
+        <h2 class="locations-name">{{ location.name }}</h2>
+        <div class="location-details">{{ location.details }}</div>
+        <a class="more-artworks" href="{{ url_for('seperate_locations', id=location.id) }}">Click here to see artworks found here!</a>
+    </div>
+    {% endfor %}
 </div>
+{% endfor %}
 {% endblock %}
