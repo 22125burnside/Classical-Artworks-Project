@@ -80,24 +80,31 @@ def all_artworks():
 @app.route('/location')
 def location():
     db = get_db()
-    # Just dumping my location data right now
     cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
-    ORDER BY CurrentLocation.current_location ASC;
+        SELECT id, found_location
+        FROM FoundLocation
+        ORDER BY found_location ASC
     """)
-    art = cur.fetchall()
-    # Sort headers by current locations
-    locations = sorted(set(row['current_location'] for row in art))
-    return render_template("locations.html", title="Locations", art=art, locations=locations)
+    found_locations = cur.fetchall()
+    return render_template("locations.html", title="Locations", found_locations=found_locations)
+
+
+# All the seperate locations (found)
+@app.route('/locations/<int:id>')
+def separate_locations(id):
+    db = get_db()
+    cursor = db.execute("""
+        SELECT *
+        FROM Artwork
+        JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+        WHERE FoundLocation.id = ?
+    """, (id,))
+    # fetching all my artworks that are in that location
+    artworks = cursor.fetchall()
+    if artworks is None:
+        abort(404)
+    location_name = artworks[0]['found_location']
+    return render_template('seperate_location.html', art=artworks, location_name=location_name)
 
 
 # My time period page
@@ -179,6 +186,7 @@ def roman_period():
     """)
     art = cur.fetchall()
     return render_template('Roman_art.html', title="Roman Art Period Artwork", art=art)
+
 
 # Classical art period page
 @app.route('/classical_period')
@@ -404,7 +412,6 @@ def seperate_artworks(id):
     row = cursor.fetchone()
     if row is None:
         abort(404)
-    db.close()
     return render_template('seperate.html', title=row["art_name"], row=row)
 
 
