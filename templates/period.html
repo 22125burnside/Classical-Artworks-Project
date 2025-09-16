@@ -4,11 +4,14 @@
     <h2 class="section-header-words">{{ title }}</h2>
 </div>
 <div class="gallery">
+    <!-- Loop through information -->
     {% for row in art %}
     <div class="card">
         <div class="card-name">{{ row.art_name }}</div>
+        <!-- Link to image -->
         <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
         <div class="card-details">
+            <!-- Information -->
             <div><b class="bold">Type:</b> {{ row.type }}</div>
             <div><b class="bold">Date made:</b> {{ row.years }}</div>
             <div><b class="bold">Century:</b> {{ row.century }}</div>

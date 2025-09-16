@@ -1,12 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="section-header">
+    <!-- The name for the artwork -->
     <h2 class="section-header-words">{{ row.art_name }}</h2>
 </div>
 <div class="individual-gallery">
     <div class="individual-card">
+        <!-- card image found based on name -->
         <img class="individual-card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
         <div class="individual-card-details">
+            <!-- Information about artwork -->
             <td><b class="bold">Type:</b> {{ row.type }}</td><br>
             <td><b class="bold">Date made:</b> {{ row.years }}</td><br>
             <td><b class="bold">Century:</b> {{ row.century }}</td><br>

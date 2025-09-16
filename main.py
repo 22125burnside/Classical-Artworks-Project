@@ -5,7 +5,7 @@ import sqlite3
 app = Flask(__name__)
 
 
-# List of the information in the blurbs (putting into database later)
+# List of the information in the blurbs (adding into database later)
 locations = [
     {"id": 1, "name": "House of Vettii, Pompeii", "details": "A wealthy Roman townhouse that offers a snapshot of elite life in Pompeii before the eruption of Vesuvius.", "region": "Italy"},
     {"id": 2, "name": "Esquiline Hill, Rome", "details": "One of the Seven Hills of Rome, once home to aristocratic houses, gardens, and later imperial palaces.", "region": "Italy"},
@@ -39,7 +39,7 @@ locations = [
 ]
 
 
-# get db function (creates connection, etc.)
+# Get a database connection, creating one if it doesn't exist
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -50,22 +50,25 @@ def get_db():
 
 
 @app.teardown_appcontext
+# Close the database at the end of the request
 def close_db(error):
     db = g.pop('db', None)
     if db is not None:
         db.close()
 
 
-# my home page
+# home page (shows featured artworks)
 @app.route("/")
 def home():
     db = get_db()
-    # Top 20 most popular artworks/architecture (might change later)
+    # id's for featured artworks
     featured = (20, 15, 14, 4, 5, 40, 7, 6, 49, 2, 3,
                 47, 46, 26, 27, 16, 8, 17, 21, 19)
+    # Creates a string of ? based on how many featured artworks there are
     placeholders = ','.join('?' for _ in featured)
     query = f"""
     SELECT
+    -- grab all needed information
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
@@ -75,23 +78,25 @@ def home():
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
+    -- joing century, foundlocation, and currentlocation table onto the artwork table
     JOIN Century ON Artwork.century_id = Century.id
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    WHERE Artwork.id IN ({placeholders})
+    WHERE Artwork.id IN ({placeholders}) -- only executes query for featured artworks
     ORDER BY Artwork.art_name ASC;
     """
-    cur = db.execute(query, featured)
+    cur = db.execute(query, featured) # execute query
     art = cur.fetchall()
     return render_template("home.html", title="Home", art=art)
 
 
-# Displays all the artworks
+# Page displaying all the artworks
 @app.route('/all_artworks')
 def all_artworks():
     db = get_db()
     cur = db.execute("""
     SELECT
+    -- select all needed information
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
@@ -101,49 +106,54 @@ def all_artworks():
     Century.century,
     Century.time_period
     FROM Artwork
+    -- connect artwork table to foundlocation, currentlocation, and currentlocation table
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    GROUP BY Artwork.id
 """)
     art = cur.fetchall()
     return render_template("all_art.html", title="All Art", art=art)
 
 
-# My location page
+# My found location page
 @app.route("/location")
 def locations_page():
+    # Page shows all found locations with blurbs
     return render_template("locations.html", locations=locations)
 
 
-# All the seperate locations (found)
+# Individual artworks for all found locations
 @app.route('/locations/<int:id>')
 def seperate_locations(id):
     db = get_db()
     cursor = db.execute("""
         SELECT *
-        FROM Artwork
+        FROM Artwork -- select all from artwork table and foundlocation table
         JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+        -- only fetching the information when it connects to the id
         WHERE FoundLocation.id = ?""", (id,))
-    # fetching all my artworks that are in that location
     art = cursor.fetchall()
+    # Aborting if the id is not connected to a location
     if not art:
         abort(404)
-    location_name = art[0]['found_location']
+    location_name = art[0]['found_location'] # 
     return render_template('seperate_location.html', title="Seperate Locations", art=art, location_name=location_name)
 
 
-# My time period page 
+# Page listing time periods and has blurbs for each 
 @app.route('/time_period') 
 def time_period(): 
     return render_template("time_period.html", title="Time Period")
 
 
+# page for each individual time period page
 @app.route('/period/<period_name>')
+# period_name changes based on period page asked for
 def period_page(period_name):
     db = get_db()
     cur = db.execute("""
     SELECT
+    -- collect all the information I need
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
@@ -153,14 +163,18 @@ def period_page(period_name):
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
+    -- join onto the other tables I need
     JOIN Century ON Artwork.century_id = Century.id
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    -- ? is a placeholder for period_name
     WHERE Century.time_period = ?
     ORDER BY years DESC;
     """, (period_name,))
+    # fetch results that match the query
     art = cur.fetchall()
     if not art:
+        # abort if results are empty (will go to error_404 page)
         abort(404)
     return render_template('period.html', title=f"{period_name} Artwork", art=art)
 
@@ -171,26 +185,32 @@ def characters():
     db = get_db()
     cur = db.execute("""
     SELECT
+    -- select the information that I need
     Artwork.id,
     Person.id AS person_id,
     Person.name,
     Person.role,
+    -- groups all artworks associated with person into a comma-seperated string
     GROUP_CONCAT(Artwork.art_name, ', ') AS artworks
     FROM Person
+    -- join onto the person table
     JOIN ArtworkPerson ON Person.id = ArtworkPerson.pid
     JOIN Artwork ON Artwork.id = ArtworkPerson.aid
-    GROUP BY Person.id
+    GROUP BY Person.id -- group all rows by each person so there is no duplicate information
     ORDER BY Person.name ASC;
     """)
+    # returns a list of rows that corresponds to each person (no duplicates)
     people = cur.fetchall()
     return render_template('character.html', title="People", people=people)
 
 
+# page for each individual type (e.g. fresco)
 @app.route('/artworks/<art_type>')
 def artwork_types(art_type):
     db = get_db()
     cur = db.execute("""
     SELECT
+    -- select certain information
     Artwork.id,
     Artwork.art_name,
     Artwork.type,
@@ -200,34 +220,38 @@ def artwork_types(art_type):
     Century.century,
     Century.time_period
     FROM Artwork
+    -- connect to other tables
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = ?
-    """, (art_type.capitalize(),))
+    WHERE Artwork.type = ? -- filters artwork by type 
+    """, (art_type.capitalize(),)) # prevents sql injection
     art = cur.fetchall()
     if not art:
+        # aborts to error_404 page if no types are found
         abort(404)
     return render_template('artworks.html', title=art_type.capitalize(), art=art)
 
 
 
 # All the seperate individual pages for each artwork
-@app.route('/seperate_artworks/<int:id>')
+@app.route('/seperate_artworks/<int:id>') # seperates artwork pages by its id
 def seperate_artworks(id):
     db = get_db()
     cursor = db.execute("""
     SELECT *
+    -- got all the information from all the tables
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
     JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
     JOIN Person ON ArtworkPerson.pid = Person.id
-    WHERE Artwork.id = ?""", (id,))
+    WHERE Artwork.id = ?""", (id,)) # only fetches artwork with specific id
     # Only fetching one piece of info (the artwork)
     row = cursor.fetchone()
     if row is None:
+        # aborts if no artwork is found with the id
         abort(404)
     return render_template('seperate.html', title=row["art_name"], row=row)
 

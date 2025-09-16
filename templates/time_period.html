@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
+<!-- Archaic Period Section -->
 <div class="section-header">
     <h2 class="section-header-words">Archaic Period</h2>
 </div>
+<!-- Information about the archaic period -->
     <p class="information">
         The Archaic period was a formative era in ancient Greece, bridging the gap between the rigid geometric styles of earlier centuries and the naturalism of the Classical age.
         Politically, this was a time when the Greek city-states, or poleis, were developing their distinctive systems of government, 
@@ -18,12 +20,14 @@
         <br>
         Overall, the Archaic period was an age of experimentation and innovation, setting the stage for the artistic achievements of Classical Greece.<br>
         <br>
-        <a class="more-artworks" href="{{ url_for('period_page', period_name='Archaic Period') }}">Click here to see all the artworks from this period!</a>
+        <!-- Links to the archaic period page -->
+        <a class="link" href="{{ url_for('period_page', period_name='Archaic Period') }}">Click here to see all the artworks from this period!</a>
     </p>
-
+<!-- Classical Period section -->
     <div class="section-header">
         <h2 class="section-header-words">Classical Period</h2>
     </div>
+    <!-- Blurb about classical period  -->
         <p class="information">
         The Classical period of Greek art is often seen as the high point of ancient artistic achievement. 
         Following the Persian Wars, Athens emerged as a cultural and political center, and artists sought to express ideals of harmony, balance, and proportion. 
@@ -37,12 +41,14 @@
         into the expressive style of the Hellenistic age. Overall, Classical Greek art captured the balance between realism and idealism, 
         leaving a profound legacy that has influenced Western art for centuries.<br>
         <br>
-        <a class="more-artworks" href="{{ url_for('period_page', period_name='Classical Period') }}">Click here to see all the artworks from this period!</a>
+        <!-- Link to classical period page -->
+        <a class="link" href="{{ url_for('period_page', period_name='Classical Period') }}">Click here to see all the artworks from this period!</a>
         </p>
-
+<!-- Hellenistic period section -->
     <div class="section-header">
         <h2 class="section-header-words">Hellenistic Period</h2>
     </div>
+    <!-- Blurb about hellenistic period -->
         <p class="information">
         The Hellenistic period began after the death of Alexander the Great in 323 BCE and extended until the Roman conquest in 31 BCE. 
         This was an age of cultural expansion, as Greek art and ideas spread across Egypt, the Near East, and beyond, blending with local traditions.<br>
@@ -58,12 +64,14 @@
         This was a period of innovation and diversity, where art became more accessible, experimental, and deeply emotional, 
         setting the stage for Roman adaptations in the centuries that followed.<br>
         <br>
-        <a class="more-artworks" href="{{ url_for('period_page', period_name='Hellenistic Period') }}">Click here to see all the artworks from this period!</a>
+        <!-- Link to the hellenistic period -->
+        <a class="link" href="{{ url_for('period_page', period_name='Hellenistic Period') }}">Click here to see all the artworks from this period!</a>
         </p>
-
+<!-- Roman art period section -->
     <div class="section-header">
         <h2 class="section-header-words">Roman Art Period</h2>
     </div>
+    <!-- Blurb about Roman Art -->
         <p class="information">
         Roman art developed under the influence of earlier Greek traditions but grew into a distinctive style that reflected the empires power, 
         diversity, and practicality. Unlike the idealized forms of Greek art, Roman artists placed a strong emphasis on realism and individuality, 
@@ -79,6 +87,7 @@
         Overall, Roman art was practical, political, and celebratory — serving not only as decoration but also as propaganda to communicate Romes dominance and the 
         authority of its rulers. It blended Greek ideals with Roman innovation, leaving a lasting influence on Western art and architecture.<br>
         <br>
-        <a class="more-artworks" href="{{ url_for('period_page', period_name='Roman Art') }}">Click here to see all the artworks from this period!</a>
+        <!-- Link to the Roman Art page -->
+        <a class="link" href="{{ url_for('period_page', period_name='Roman Art') }}">Click here to see all the artworks from this period!</a>
         </p>
 {% endblock %}

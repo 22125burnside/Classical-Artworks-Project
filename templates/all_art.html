@@ -1,15 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
+<!-- sets the headers -->
 {% set art_types = ['fresco', 'vase', 'sculpture', 'architecture', 'relief', 'mosaic', 'jewellery']%}
 {% for art_type in art_types%}
 <div class="section-header">
+    <!-- header based on art type -->
     <h2 class="section-header-words">{{ art_type|capitalize }}</h2>
 </div>
 <div class="gallery-wrapper">
     <div class="all-art-gallery">
+        <!-- Puts specific artworks under each header -->
         {% for row in art if row.type|lower == art_type%}
         <div class="all-art-card">
             <div class="card-name">{{ row.art_name }}</div>
+            <!-- Links to image -->
                 <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
                 <div class="card-details">
                     <td><b class="bold">Type:</b> {{ row.type }}</td><br>
@@ -17,7 +21,7 @@
                     <td><b class="bold">Century:</b> {{ row.century }}</td><br>
                     <td><b class="bold">Found Location:</b> {{ row.found_location }}</td><br>
                     <td><b class="bold">Current Location:</b> {{ row.current_location }}</td><br>
-                    <!-- Changing the wording later or making it so you can just click on the card itself -->
+                    <!-- Links to seperate ids -->
                     <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
                 </div>
             </div>
