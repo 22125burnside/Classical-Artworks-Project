@@ -32,19 +32,16 @@ def home():
                 47, 46, 26, 27, 16, 8, 17, 21, 19)
     # Creates a string of ? based on how many featured artworks there are
     placeholders = ','.join('?' for _ in featured)
+    # f string allows injection of placeholders
     query = f"""
     SELECT
-    -- grab all needed information
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*, -- grabs everything from artwork table
     Century.century,
     Century.time_period,
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
-    -- joing century, foundlocation, and currentlocation table onto the artwork table
+    -- joining other tables so I can get info
     JOIN Century ON Artwork.century_id = Century.id
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
@@ -62,11 +59,7 @@ def all_artworks():
     db = get_db()
     cur = db.execute("""
     SELECT
-    -- select all needed information
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*,
     FoundLocation.found_location,
     CurrentLocation.current_location,
     Century.century,
@@ -162,17 +155,12 @@ def period_page(period_name):
     db = get_db()
     cur = db.execute("""
     SELECT
-    -- collect all the information I need
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*,
     Century.century,
     Century.time_period,
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
-    -- join onto the other tables I need
     JOIN Century ON Artwork.century_id = Century.id
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
@@ -195,10 +183,12 @@ def characters():
     cur = db.execute("""
     SELECT
     Artwork.id,
+    -- so there isn't two values with the same name
     Person.id AS person_id,
     Person.name,
     Person.role,
-    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks
+    -- takes all artworks linked to person and puts in list
+    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks 
     FROM Person
     JOIN ArtworkPerson ON Person.id = ArtworkPerson.pid
     JOIN Artwork ON Artwork.id = ArtworkPerson.aid
@@ -217,10 +207,7 @@ def artwork_types(art_type):
     cur = db.execute("""
     SELECT
     -- select certain information
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*,
     FoundLocation.found_location,
     CurrentLocation.current_location,
     Century.century,
