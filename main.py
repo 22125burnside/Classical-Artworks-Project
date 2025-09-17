@@ -100,13 +100,13 @@ def current_location():
 def current_location_page(id):
     db = get_db()
     cur = db.execute("""
-        SELECT *
-        FROM Artwork
-        JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-        JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-        JOIN Century ON Artwork.century_id = Century.id
-        WHERE CurrentLocation.id = ?
-        ORDER BY Artwork.art_name ASC;
+    SELECT *
+    FROM Artwork
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE CurrentLocation.id = ?
+    ORDER BY Artwork.art_name ASC;
     """, (id,))
     art = cur.fetchall()
     if not art:
@@ -134,13 +134,13 @@ def found_location():
 def found_location_page(id):
     db = get_db()
     cur = db.execute("""
-        SELECT *
-        FROM Artwork
-        JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-        JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-        JOIN Century ON Artwork.century_id = Century.id
-        WHERE FoundLocation.id = ?
-        ORDER BY Artwork.art_name ASC;
+    SELECT *
+    FROM Artwork
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE FoundLocation.id = ?
+    ORDER BY Artwork.art_name ASC;
     """, (id,))
     art = cur.fetchall()
     if not art:
@@ -239,27 +239,33 @@ def artwork_types(art_type):
     return render_template('artworks.html', title=art_type.capitalize(), art=art)
 
 
-
 # All the seperate individual pages for each artwork
-@app.route('/seperate_artworks/<int:id>') # seperates artwork pages by its id
+@app.route('/seperate_artworks/<int:id>')
 def seperate_artworks(id):
     db = get_db()
     cursor = db.execute("""
-    SELECT *
-    -- got all the information from all the tables
+    SELECT 
+    Artwork.*,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    CurrentLocation.region,
+    Century.century,
+    Century.time_period,
+    -- groups all people in a single row
+    GROUP_CONCAT(Person.name, ', ') AS people
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
-    JOIN Person ON ArtworkPerson.pid = Person.id
-    WHERE Artwork.id = ?""", (id,)) # only fetches artwork with specific id
-    # Only fetching one piece of info (the artwork)
-    row = cursor.fetchone()
-    if row is None:
-        # aborts if no artwork is found with the id
+    LEFT JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
+    LEFT JOIN Person ON ArtworkPerson.pid = Person.id
+    WHERE Artwork.id = ?
+    GROUP BY Artwork.id
+    """, (id,))
+    art = cursor.fetchone()
+    if not art:
         abort(404)
-    return render_template('seperate.html', title=row["art_name"], row=row)
+    return render_template('seperate.html', title=art["art_name"], art=art)
 
 
 # Error 404 page
