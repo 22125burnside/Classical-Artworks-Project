@@ -5,7 +5,7 @@ import sqlite3
 app = Flask(__name__)
 
 
-# get db function (creates connection, etc.)
+# Get a database connection, creating one if it doesn't exist
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -16,201 +16,164 @@ def get_db():
 
 
 @app.teardown_appcontext
+# Close the database at the end of the request
 def close_db(error):
     db = g.pop('db', None)
     if db is not None:
         db.close()
 
 
-# my home page
+# home page (shows featured artworks)
 @app.route("/")
 def home():
     db = get_db()
-    # Top 20 most popular artworks/architecture (might change later)
+    # id's for featured artworks
     featured = (20, 15, 14, 4, 5, 40, 7, 6, 49, 2, 3,
                 47, 46, 26, 27, 16, 8, 17, 21, 19)
+    # Creates a string of ? based on how many featured artworks there are
     placeholders = ','.join('?' for _ in featured)
+    # f string allows injection of placeholders
     query = f"""
     SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*, -- grabs everything from artwork table
     Century.century,
     Century.time_period,
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
+    -- joining other tables so I can get info
     JOIN Century ON Artwork.century_id = Century.id
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    WHERE Artwork.id IN ({placeholders})
+    WHERE Artwork.id IN ({placeholders}) -- only executes query for featured artworks
     ORDER BY Artwork.art_name ASC;
     """
-    cur = db.execute(query, featured)
+    cur = db.execute(query, featured) # execute query
     art = cur.fetchall()
     return render_template("home.html", title="Home", art=art)
 
 
-# Displays all the artworks
+# Page displaying all the artworks
 @app.route('/all_artworks')
 def all_artworks():
     db = get_db()
     cur = db.execute("""
     SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*,
     FoundLocation.found_location,
     CurrentLocation.current_location,
     Century.century,
     Century.time_period
     FROM Artwork
+    -- connect artwork table to foundlocation, currentlocation, and currentlocation table
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    GROUP BY Artwork.id
 """)
     art = cur.fetchall()
     return render_template("all_art.html", title="All Art", art=art)
 
 
-# My location page
-@app.route('/location')
-def location():
+# Page listing all current locations
+@app.route('/current_location')
+def current_location():
+    db = get_db()
+    # selecting everything from current_location
+    cur = db.execute("""
+        SELECT *
+        FROM CurrentLocation
+        ORDER BY current_location ASC;
+    """)
+    locations = cur.fetchall()
+    return render_template('current_location.html', title="Current Locations", locations=locations)
+
+
+# Page for individual current location
+@app.route('/current_locations/<int:id>')
+def current_location_page(id):
     db = get_db()
     cur = db.execute("""
-        SELECT id, found_location
-        FROM FoundLocation
-        ORDER BY found_location ASC
-    """)
-    found_locations = cur.fetchall()
-    return render_template("locations.html", title="Locations", found_locations=found_locations)
-
-
-# All the seperate locations (found)
-@app.route('/locations/<int:id>')
-def separate_locations(id):
-    db = get_db()
-    cursor = db.execute("""
-        SELECT *
-        FROM Artwork
-        JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-        WHERE FoundLocation.id = ?
+    SELECT *
+    FROM Artwork
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE CurrentLocation.id = ?
+    ORDER BY Artwork.art_name ASC;
     """, (id,))
-    # fetching all my artworks that are in that location
-    artworks = cursor.fetchall()
-    if artworks is None:
+    art = cur.fetchall()
+    if not art:
         abort(404)
-    location_name = artworks[0]['found_location']
-    return render_template('seperate_location.html', art=artworks, location_name=location_name)
+    location_name = art[0]['current_location']
+    return render_template('sep_current_location.html', title=location_name, art=art, location_name=location_name)
 
 
-# My time period page
-@app.route('/time_period')
-def time_period():
+# Page listing all found locations
+@app.route('/found_location')
+def found_location():
+    db = get_db()
+    # selecting everything from found_location
+    cur = db.execute("""
+        SELECT *
+        FROM FoundLocation
+        ORDER BY found_location ASC;
+    """)
+    locations = cur.fetchall()
+    return render_template('found_location.html', title="Found Locations", locations=locations)
+
+
+# Page for found location
+@app.route('/found_locations/<int:id>')
+def found_location_page(id):
+    db = get_db()
+    cur = db.execute("""
+    SELECT *
+    FROM Artwork
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN Century ON Artwork.century_id = Century.id
+    WHERE FoundLocation.id = ?
+    ORDER BY Artwork.art_name ASC;
+    """, (id,))
+    art = cur.fetchall()
+    if not art:
+        abort(404)
+    location_name = art[0]['found_location']
+    return render_template('sep_found_location.html', title=location_name, art=art, location_name=location_name)
+
+
+# Page listing time periods and has blurbs for each 
+@app.route('/time_period') 
+def time_period(): 
     return render_template("time_period.html", title="Time Period")
 
 
-# Archaic period page
-@app.route('/archaic_period')
-def archaic_period():
+# page for each individual time period page
+@app.route('/period/<period_name>')
+# period_name changes based on period page asked for
+def period_page(period_name):
     db = get_db()
     cur = db.execute("""
     SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    Artwork.*,
     Century.century,
     Century.time_period,
     FoundLocation.found_location,
     CurrentLocation.current_location
     FROM Artwork
-    JOIN Century ON Artwork.century_id=Century.id
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
-    WHERE Century.time_period = 'Archaic Period'
+    JOIN Century ON Artwork.century_id = Century.id
+    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
+    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
+    -- ? is a placeholder for period_name
+    WHERE Century.time_period = ?
     ORDER BY years DESC;
-    """)
+    """, (period_name,))
+    # fetch results that match the query
     art = cur.fetchall()
-    return render_template('archaic.html', title="Archaic Period Artwork", art=art)
-
-
-# Hellenistic period page
-@app.route('/hellenistic_period')
-def hellenistic_period():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    Century.century,
-    Century.time_period,
-    FoundLocation.found_location,
-    CurrentLocation.current_location
-    FROM Artwork
-    JOIN Century ON Artwork.century_id=Century.id
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
-    WHERE Century.time_period = 'Hellenistic Period'
-    ORDER BY years DESC;
-    """)
-    art = cur.fetchall()
-    return render_template('hellenistic.html', title="Hellenistic Period Artwork", art=art)
-
-
-# Roman Art period page
-@app.route('/roman_period')
-def roman_period():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    Century.century,
-    Century.time_period,
-    FoundLocation.found_location,
-    CurrentLocation.current_location
-    FROM Artwork
-    JOIN Century ON Artwork.century_id=Century.id
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
-    WHERE Century.time_period = 'Roman Art'
-    ORDER BY years DESC;
-    """)
-    art = cur.fetchall()
-    return render_template('Roman_art.html', title="Roman Art Period Artwork", art=art)
-
-
-# Classical art period page
-@app.route('/classical_period')
-def classical_period():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    Century.century,
-    Century.time_period,
-    FoundLocation.found_location,
-    CurrentLocation.current_location
-    FROM Artwork
-    JOIN Century ON Artwork.century_id=Century.id
-    JOIN FoundLocation ON Artwork.FL_id=FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id= CurrentLocation.id
-    WHERE Century.time_period = 'Classical Period'
-    ORDER BY years DESC;
-    """)
-    art = cur.fetchall()
-    return render_template('classical_art.html', title="Classical Art Period Artwork", art=art)
+    if not art:
+        # abort if results are empty (will go to error_404 page)
+        abort(404)
+    return render_template('period.html', title=f"{period_name} Artwork", art=art)
 
 
 # Page for all the characters
@@ -220,179 +183,47 @@ def characters():
     cur = db.execute("""
     SELECT
     Artwork.id,
+    -- so there isn't two values with the same name
     Person.id AS person_id,
     Person.name,
     Person.role,
-    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks
+    -- takes all artworks linked to person and puts in list
+    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks 
     FROM Person
     JOIN ArtworkPerson ON Person.id = ArtworkPerson.pid
     JOIN Artwork ON Artwork.id = ArtworkPerson.aid
     GROUP BY Person.id
     ORDER BY Person.name ASC;
     """)
+    # returns a list of rows that corresponds to each person (no duplicates)
     people = cur.fetchall()
     return render_template('character.html', title="People", people=people)
 
 
-@app.route('/frescoes')
-def frescoes():
+# page for each individual type (e.g. fresco)
+@app.route('/artworks/<art_type>')
+def artwork_types(art_type):
     db = get_db()
     cur = db.execute("""
     SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
+    -- select certain information
+    Artwork.*,
     FoundLocation.found_location,
     CurrentLocation.current_location,
     Century.century,
     Century.time_period
     FROM Artwork
+    -- connect to other tables
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Fresco'
-    """)
+    WHERE Artwork.type = ? -- filters artwork by type 
+    """, (art_type.capitalize(),)) # prevents sql injection
     art = cur.fetchall()
-    return render_template("fresco.html", title="Frescoes", art=art)
-
-
-@app.route('/vases')
-def vases():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location,
-    Century.century,
-    Century.time_period
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Vase'
-    """)
-    art = cur.fetchall()
-    return render_template("vase.html", title="Vases", art=art)
-
-
-@app.route('/sculptures')
-def sculptures():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location,
-    Century.century,
-    Century.time_period
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Sculpture'
-    """)
-    art = cur.fetchall()
-    return render_template("sculpture.html", title="Sculptures", art=art)
-
-
-@app.route('/architecture')
-def architect():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location,
-    Century.century,
-    Century.time_period
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Architecture'
-    """)
-    art = cur.fetchall()
-    return render_template("architect.html", title="Architecture", art=art)
-
-
-@app.route('/reliefs')
-def reliefs():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location,
-    Century.century,
-    Century.time_period
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Relief'
-    """)
-    art = cur.fetchall()
-    return render_template("relief.html", title="Reliefs", art=art)
-
-
-@app.route('/mosaics')
-def mosaics():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location,
-    Century.century,
-    Century.time_period
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Mosaic'
-    """)
-    art = cur.fetchall()
-    return render_template("mosaics.html", title="Mosaics", art=art)
-
-
-@app.route('/jewellery')
-def jewellery():
-    db = get_db()
-    cur = db.execute("""
-    SELECT
-    Artwork.id,
-    Artwork.art_name,
-    Artwork.type,
-    Artwork.years,
-    FoundLocation.found_location,
-    CurrentLocation.current_location,
-    Century.century,
-    Century.time_period
-    FROM Artwork
-    JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
-    JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = 'Jewellery'
-    """)
-    art = cur.fetchall()
-    return render_template("jewellery.html", title="Jewellery", art=art)
+    if not art:
+        # aborts to error_404 page if no types are found
+        abort(404)
+    return render_template('artworks.html', title=art_type.capitalize(), art=art)
 
 
 # All the seperate individual pages for each artwork
@@ -400,19 +231,28 @@ def jewellery():
 def seperate_artworks(id):
     db = get_db()
     cursor = db.execute("""
-    SELECT *
+    SELECT 
+    Artwork.*,
+    FoundLocation.found_location,
+    CurrentLocation.current_location,
+    CurrentLocation.region,
+    Century.century,
+    Century.time_period,
+    -- groups all people in a single row
+    GROUP_CONCAT(Person.name, ', ') AS people
     FROM Artwork
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
-    JOIN Person ON ArtworkPerson.pid = Person.id
-    WHERE Artwork.id = ?""", (id,))
-    # Only fetching one piece of info (the artwork)
-    row = cursor.fetchone()
-    if row is None:
+    LEFT JOIN ArtworkPerson ON Artwork.id = ArtworkPerson.aid
+    LEFT JOIN Person ON ArtworkPerson.pid = Person.id
+    WHERE Artwork.id = ?
+    GROUP BY Artwork.id
+    """, (id,))
+    art = cursor.fetchone()
+    if not art:
         abort(404)
-    return render_template('seperate.html', title=row["art_name"], row=row)
+    return render_template('seperate.html', title=art["art_name"], art=art)
 
 
 # Error 404 page

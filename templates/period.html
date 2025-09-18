@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section-header">
+    <h2 class="section-header-words">{{ title }}</h2>
+</div>
+<div class="gallery">
+    <!-- Loop through information -->
+    {% for row in art %}
+    <div class="card">
+        <div class="card-name">{{ row.art_name }}</div>
+        <!-- Link to image -->
+        <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
+        <div class="card-details">
+            <!-- Information -->
+            <div><b class="bold">Type:</b> {{ row.type }}</div>
+            <div><b class="bold">Date made:</b> {{ row.years }}</div>
+            <div><b class="bold">Century:</b> {{ row.century }}</div>
+            <div><b class="bold">Time Period:</b> {{ row.time_period }}</div>
+            <div><b class="bold">Found Location:</b> {{ row.found_location }}</div>
+            <div><b class="bold">Current Location:</b> {{ row.current_location }}</div>
+            <a class="link" href="{{ url_for('seperate_artworks', id=row.id) }}">Go to page</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

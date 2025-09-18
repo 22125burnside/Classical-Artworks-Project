@@ -2,23 +2,30 @@
 <nav class="navbar">
   <div class="nav-container">
     <div class="nav-links">
+      <!-- Links to each different page -->
         <li><a href="/">Home</a></li>
         <li><a href="/all_artworks">All Artworks</a></li>
-        <li><a href="/location">Locations</a></li>
+        <!-- Dropdown for locations -->
+            <li class="dropdown">
+                <a href="#">Locations ▾</a>
+                <div class="dropdown-content">
+                    <a href="/found_location">Found Locations</a>
+                    <a href="/current_location">Current Locations</a>
+                </div>
+            </li>
         <li><a href="/time_period">Time Period</a></li>
-        <!-- Chnage people name later -->
-        <li><a href="/characters">People</a></li>
+        <li><a href="/characters">Characters</a></li>
         <!-- Creates a drop down for the artworks -->
         <li class="dropdown">
             <a href="#" class="dropbtn">Artworks ▾</a>
             <div class="dropdown-content">
-                <a href="/frescoes">Frescoes</a>
-                <a href="/vases">Vases</a>
-                <a href="/sculptures">Sculptures</a>
-                <a href="/architecture">Architecture</a>
-                <a href="/reliefs">Reliefs</a>
-                <a href="/mosaics">Mosaics</a>
-                <a href="/jewellery">Jewellery</a>
+                <a href="{{ url_for('artwork_types', art_type='fresco') }}">Frescoes</a>
+                <a href="{{ url_for('artwork_types', art_type='vase') }}">Vases</a>
+                <a href="{{ url_for('artwork_types', art_type='sculpture') }}">Sculptures</a>
+                <a href="{{ url_for('artwork_types', art_type='architecture') }}">Architecture</a>
+                <a href="{{ url_for('artwork_types', art_type='relief') }}">Reliefs</a>
+                <a href="{{ url_for('artwork_types', art_type='mosaic') }}">Mosaics</a>
+                <a href="{{ url_for('artwork_types', art_type='jewellery') }}">Jewellery</a>
             </div>
         </li>
     </div>

@@ -1,17 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="section-header">
-    <h2 class="section-header-words">{{ row.art_name }}</h2>
+    <h2 class="section-header-words">{{ art.art_name }}</h2>
 </div>
-<div class="individual-gallery">
-    <div class="individual-card">
-        <img class="individual-card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
-        <div class="individual-card-details">
-            <td><b class="bold">Type:</b> {{ row.type }}</td><br>
-            <td><b class="bold">Date made:</b> {{ row.years }}</td><br>
-            <td><b class="bold">Century:</b> {{ row.century }}</td><br>
-            <td><b class="bold">Found Location:</b> {{ row.found_location }}</td><br>
-            <td><b class="bold">Current Location:</b> {{ row.current_location }}</td><br>
+<div class="individual-card">
+    <img class="individual-card-image" 
+         src="{{ url_for('static', filename='images/' ~ art.type ~ '-' ~ art.art_name|replace(' ', '') ~ '.jpg') }}" 
+         alt="{{ art.art_name }}">
+    <div class="individual-card-details">
+        <div class="individual-card-name">{{ art.art_name }}</div>
+        <div><b>Type:</b> {{ art.type }}</div>
+        <div><b>Date made:</b> {{ art.years }}</div>
+        <div><b>Century:</b> {{ art.century }}</div>
+        <div><b>Found Location:</b> {{ art.found_location }}</div>
+        <div><b>Current Location:</b> {{ art.current_location }}</div>
+        <div><b>Current Region:</b> {{ art.region }}</div>
+        <!-- Get all the people in the artwork in a list -->
+        <br><div class="people">
+            <b>People:</b>
+                {% for name in art.people.split(', ') %}
+                <li>{{ name }}</li>
+                {% endfor %}
         </div>
     </div>
 </div>

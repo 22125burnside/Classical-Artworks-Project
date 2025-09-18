@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+{% set regions = locations | map(attribute='region') | unique | sort %}
+{% for region in regions %}
+<div class="section-header">
+    <h2 class="section-header-words">{{ region }}</h2>
+</div>
+<div class="gallery">
+    {% for location in locations if location['region'] == region %}
+    <div class="card">
+        <h2 class="card-name">{{ location.current_location }}</h2>
+        {% if location.information %}
+        <div class="location-details">{{ location.information }}</div>
+        {% endif %}
+        <a class="more-artworks" href="{{ url_for('current_location_page', id=location.id) }}">
+            Click here to see artworks in this location!
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+{% endblock %}
