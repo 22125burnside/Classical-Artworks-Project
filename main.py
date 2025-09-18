@@ -45,10 +45,11 @@ def home():
     JOIN Century ON Artwork.century_id = Century.id
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
-    WHERE Artwork.id IN ({placeholders}) -- only executes query for featured artworks
+    WHERE Artwork.id IN ({placeholders})
+    -- only executes query for featured artworks
     ORDER BY Artwork.art_name ASC;
     """
-    cur = db.execute(query, featured) # execute query
+    cur = db.execute(query, featured)  # execute query
     art = cur.fetchall()
     return render_template("home.html", title="Home", art=art)
 
@@ -65,7 +66,7 @@ def all_artworks():
     Century.century,
     Century.time_period
     FROM Artwork
-    -- connect artwork table to foundlocation, currentlocation, and currentlocation table
+    -- connect neccessary tables
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
@@ -85,7 +86,10 @@ def current_location():
         ORDER BY current_location ASC;
     """)
     locations = cur.fetchall()
-    return render_template('current_location.html', title="Current Locations", locations=locations)
+    return render_template(
+        'current_location.html',
+        title="Current Locations",
+        locations=locations)
 
 
 # Page for individual current location
@@ -105,7 +109,11 @@ def current_location_page(id):
     if not art:
         abort(404)
     location_name = art[0]['current_location']
-    return render_template('sep_current_location.html', title=location_name, art=art, location_name=location_name)
+    return render_template(
+        'sep_current_location.html',
+        title=location_name,
+        art=art,
+        location_name=location_name)
 
 
 # Page listing all found locations
@@ -119,7 +127,10 @@ def found_location():
         ORDER BY found_location ASC;
     """)
     locations = cur.fetchall()
-    return render_template('found_location.html', title="Found Locations", locations=locations)
+    return render_template(
+        'found_location.html',
+        title="Found Locations",
+        locations=locations)
 
 
 # Page for found location
@@ -139,12 +150,16 @@ def found_location_page(id):
     if not art:
         abort(404)
     location_name = art[0]['found_location']
-    return render_template('sep_found_location.html', title=location_name, art=art, location_name=location_name)
+    return render_template(
+        'sep_found_location.html',
+        title=location_name,
+        art=art,
+        location_name=location_name)
 
 
-# Page listing time periods and has blurbs for each 
-@app.route('/time_period') 
-def time_period(): 
+# Page listing time periods and has blurbs for each
+@app.route('/time_period')
+def time_period():
     return render_template("time_period.html", title="Time Period")
 
 
@@ -173,7 +188,11 @@ def period_page(period_name):
     if not art:
         # abort if results are empty (will go to error_404 page)
         abort(404)
-    return render_template('period.html', title=f"{period_name} Artwork", art=art)
+    return render_template(
+        'period.html',
+        # Sets title name as the period name
+        title=f"{period_name} Artwork",
+        art=art)
 
 
 # Page for all the characters
@@ -188,7 +207,7 @@ def characters():
     Person.name,
     Person.role,
     -- takes all artworks linked to person and puts in list
-    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks 
+    GROUP_CONCAT(Artwork.art_name, ', ') AS artworks
     FROM Person
     JOIN ArtworkPerson ON Person.id = ArtworkPerson.pid
     JOIN Artwork ON Artwork.id = ArtworkPerson.aid
@@ -197,7 +216,10 @@ def characters():
     """)
     # returns a list of rows that corresponds to each person (no duplicates)
     people = cur.fetchall()
-    return render_template('character.html', title="People", people=people)
+    return render_template(
+        'character.html',
+        title="People",
+        people=people)
 
 
 # page for each individual type (e.g. fresco)
@@ -217,13 +239,16 @@ def artwork_types(art_type):
     JOIN FoundLocation ON Artwork.FL_id = FoundLocation.id
     JOIN CurrentLocation ON Artwork.CL_id = CurrentLocation.id
     JOIN Century ON Artwork.century_id = Century.id
-    WHERE Artwork.type = ? -- filters artwork by type 
-    """, (art_type.capitalize(),)) # prevents sql injection
+    WHERE Artwork.type = ? -- filters artwork by type
+    """, (art_type.capitalize(),))  # prevents sql injection
     art = cur.fetchall()
     if not art:
         # aborts to error_404 page if no types are found
         abort(404)
-    return render_template('artworks.html', title=art_type.capitalize(), art=art)
+    return render_template(
+        'artworks.html',
+        title=art_type.capitalize(),
+        art=art)
 
 
 # All the seperate individual pages for each artwork
@@ -231,7 +256,7 @@ def artwork_types(art_type):
 def seperate_artworks(id):
     db = get_db()
     cursor = db.execute("""
-    SELECT 
+    SELECT
     Artwork.*,
     FoundLocation.found_location,
     CurrentLocation.current_location,

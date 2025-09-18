@@ -10,8 +10,7 @@
         <!-- Links to artwork image -->
         <img class="card-image" src="{{ url_for('static', filename='images/' ~ row.type ~ '-' ~ row.art_name|replace(' ', '') ~ '.jpg') }}" alt="{{ row.art_name }}">
         <div class="card-details">
-            <!-- Information -->
-            <div><b class="bold">Type:</b> {{ row.type }}</div>
+            <!-- Information (no type because not needed) -->
             <div><b class="bold">Date made:</b> {{ row.years }}</div>
             <div><b class="bold">Century:</b> {{ row.century }}</div>
             <div><b class="bold">Time Period:</b> {{ row.time_period }}</div>
